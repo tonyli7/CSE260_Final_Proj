@@ -19,9 +19,11 @@ public class Demo extends Application {
 	Image[] right_imgs = new Image[7];
 	for(int i = 0; i < 7; i++){
 	    right_imgs[i] = new Image("img/Link/MovingRight/" + i + ".png");
+	    //right_imgs[i].setScaleY(-1);
 	}
 	
 	ImageView imageView = new ImageView(right_imgs[x]);
+	imageView.setScaleX(-1);
 	imageView.setFitHeight(34.5);
 	imageView.setFitWidth(24);
 	
@@ -38,7 +40,13 @@ public class Demo extends Application {
 		    System.out.println(x);
 		}
 	    });
-	
+
+	scene.setOnKeyReleased(e -> {
+		KeyCode key = e.getCode();
+		if (key == KeyCode.RIGHT){
+		    imageView.setImage(right_imgs[3]);
+		}
+	    });
 	primaryStage.setScene(scene); primaryStage.show();
 	primaryStage.show();
 
