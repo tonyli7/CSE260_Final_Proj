@@ -11,7 +11,7 @@ public class Movement{
 	    sprite.changeXY(x_units*3, 0);
 	    sprite.setCurrImg(temp[i % temp.length]);
 	    
-	    System.out.println(i % temp.length);
+	    
 	    sprite.setForm(i % temp.length);
 	    sprite.update();
 	}
@@ -20,7 +20,7 @@ public class Movement{
 	    sprite.changeXY(0, y_units*3);
 	    sprite.setCurrImg(temp[i % temp.length]);
 	    
-	    System.out.println(i % temp.length);
+	    
 	    sprite.setForm(i % temp.length);
 	    sprite.update();
 	}
