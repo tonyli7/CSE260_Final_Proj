@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
@@ -18,6 +19,10 @@ import java.util.Random;
 
 public class Demo extends Application {
 
+    private boolean right_pressed;
+    private boolean left_pressed;
+    private boolean up_pressed;
+    private boolean down_pressed;
     
     
     @Override
@@ -49,19 +54,23 @@ public class Demo extends Application {
 	scene.setOnKeyPressed(e -> {
 		KeyCode key = e.getCode();
 		if (key == KeyCode.RIGHT){
-		    Movement.move(player, 1, 0, Sprite.RIGHT, player.getForm());
+		    right_pressed = true;
+		    
 		    
 		}
 		if (key == KeyCode.LEFT){
-		    Movement.move(player, -1, 0, Sprite.LEFT, player.getForm());
+		    left_pressed = true;
+		    //Movement.unitMoveX(player, Sprite.LEFT);
 		    
 		}
 		if (key == KeyCode.UP){
-		    Movement.move(player, 0, -1, Sprite.UP, player.getForm());
+		    up_pressed = true;
+		    //Movement.unitMoveY(player, Sprite.UP);
 		    
 		}
 		if (key == KeyCode.DOWN){
-		    Movement.move(player, 0, 1, Sprite.DOWN, player.getForm());
+		    down_pressed = true;
+		    //Movement.unitMoveY(player,Sprite.DOWN);
 		    
 		}
 
@@ -71,22 +80,51 @@ public class Demo extends Application {
 	scene.setOnKeyReleased(e -> {
 		KeyCode key = e.getCode();
 		if (key == KeyCode.RIGHT){
-		    Movement.move(player, 0, 0, Sprite.RIGHT, 3);
+		    right_pressed = false;
+		    //Movement.stop(player, 3);
 		}
 		if (key == KeyCode.LEFT){
-		    Movement.move(player, 0, 0, Sprite.LEFT, 3);
+		    left_pressed = false;
+		    //Movement.move(player, 0, 0, Sprite.LEFT, 3);
 		}
 		if (key == KeyCode.UP){
-		    Movement.move(player, 0, 0, Sprite.UP, 3);
+		    up_pressed = false;
+		    //Movement.move(player, 0, 0, Sprite.UP, 3);
 		}
 		if (key == KeyCode.DOWN){
-		    Movement.move(player, 0, 0, Sprite.DOWN, 3);
+		    down_pressed = false;
+		    //Movement.move(player, 0, 0, Sprite.DOWN, 3);
 		}
 
 
 		
 	    });
 
+
+	AnimationTimer player_mvmt = new AnimationTimer(){
+		@Override
+		public void handle(long timestamp){
+		    if (right_pressed){
+			Movement.unitMoveX(player, Sprite.RIGHT);
+			//System.out.println(player.getForm());
+		    }
+		    if (left_pressed){
+			Movement.unitMoveX(player, Sprite.LEFT);
+		    }
+		    if (up_pressed){
+			Movement.unitMoveY(player, Sprite.UP);
+		    }
+		    if (down_pressed){
+			Movement.unitMoveY(player, Sprite.DOWN);
+		    }
+		    if (!right_pressed && !left_pressed && !up_pressed && !down_pressed){
+			Movement.stop(player, 3);
+		    }
+		   
+		}
+	    };
+	
+	player_mvmt.start();
 	
 	primaryStage.setScene(scene); primaryStage.show();
 	primaryStage.show();

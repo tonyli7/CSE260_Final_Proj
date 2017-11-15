@@ -25,5 +25,44 @@ public class Movement{
 	    sprite.update();
 	}
     }
+
+    public static void unitMoveX(Sprite sprite, int dir){
+	Image[] temp = sprite.getImgs(dir);
+	sprite.setDir(dir);
+	sprite.setForm((sprite.getForm() + 1) % (temp.length * 2));
+	sprite.setCurrImg(temp[sprite.getForm() / 2]);
+	
+	if (dir == Sprite.LEFT){
+	    sprite.changeXY(-2, 0);
+	}
+	if (dir == Sprite.RIGHT){
+	    sprite.changeXY(2,0);
+	}
+	sprite.update();
+    }
+
+    public static void unitMoveY(Sprite sprite, int dir){
+	Image[] temp = sprite.getImgs(dir);
+	sprite.setDir(dir);
+	sprite.setForm((sprite.getForm() + 1) % (temp.length * 2));
+	sprite.setCurrImg(temp[sprite.getForm() / 2]);
+
+	if (dir == Sprite.UP){
+	    sprite.changeXY(0, -1);
+	}
+	if (dir == Sprite.DOWN){
+	    sprite.changeXY(0, 1);
+	}
+	sprite.update();
+    }
+
+    public static void stop(Sprite sprite, int form){
+	Image[] temp = sprite.getImgs(sprite.getDir());
+	sprite.setCurrImg(temp[form]);
+	sprite.setForm(form);
+	sprite.update();
+	sprite.setForm(0);
+    }
+
     
 }
