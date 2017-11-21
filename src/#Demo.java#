@@ -47,7 +47,6 @@ public class Demo extends Application {
 	setKeyPressed(scene);
 	setKeyReleased(scene);
 	
-
 	KeyComs key_coms = new KeyComs(player);
 	key_coms.start();
 	
