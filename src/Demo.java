@@ -79,6 +79,18 @@ public class Demo extends Application {
 		    KeyComs.down_pressed = true;
 		    
 		}
+		if (key == KeyCode.Z){
+		    KeyComs.z_pressed = true;
+		    
+		}
+		if (key == KeyCode.ENTER){
+		    KeyComs.enter_pressed = true;
+		    
+		}
+		if (key == KeyCode.SHIFT){
+		    KeyComs.shift_pressed = true;
+		    
+		}
 
 	    });
     }
@@ -99,6 +111,18 @@ public class Demo extends Application {
 		}
 		if (key == KeyCode.DOWN){
 		    KeyComs.down_pressed = false;
+		}
+		if (key == KeyCode.Z){
+		    KeyComs.z_pressed = false;
+		    
+		}
+		if (key == KeyCode.ENTER){
+		    KeyComs.enter_pressed = false;
+		    
+		}
+		if (key == KeyCode.SHIFT){
+		    KeyComs.shift_pressed = false;
+		    
 		}
 		
 	    });

@@ -34,26 +34,32 @@ public abstract class Sprite{
 	left_imgs = new Image[num_imgs];
 	up_imgs = new Image[num_imgs];
 	down_imgs = new Image[num_imgs];
-	for (int i = 0; i < num_imgs; i++){
 
-	    right_imgs[i] = new Image("img/" + sprite_dir + "/MovingRight/" + i + ".png");
-	    left_imgs[i] = new Image("img/" + sprite_dir + "/MovingLeft/" + i + ".png");
-	    up_imgs[i] = new Image("img/" + sprite_dir + "/MovingUp/" + i + ".png");
-	    down_imgs[i] = new Image("img/" + sprite_dir + "/MovingDown/" + i + ".png");
-	    
-	}
+	loadImgs(right_imgs, num_imgs, sprite_dir, "/MovingRight/");
+	loadImgs(left_imgs, num_imgs, sprite_dir, "/MovingLeft/");
+	loadImgs(up_imgs, num_imgs, sprite_dir, "/MovingUp/");
+	loadImgs(down_imgs, num_imgs, sprite_dir, "/MovingDown/");
+	
 	setXY(start_x, start_y);
 
 	form = 0;
 	img_v = new ImageView(down_imgs[0]);
 
-	img_v.setFitHeight(34.5);
-	img_v.setFitWidth(24);
+	img_v.setPreserveRatio(true);
+	img_v.setFitHeight(40);
+	//img_v.setFitWidth(24);
 	
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
     }
 
+    protected void loadImgs(Image[] imgs,int num, String sprite_dir, String folder){
+	for (int i = 0; i < num; i++){
+	    imgs[i] = new Image("img/" + sprite_dir + folder + i + ".png");
+	    
+	}
+    }
+    
     public void setXY(double new_x, double new_y){
 	x_pos = new_x;
 	y_pos = new_y;
@@ -113,10 +119,6 @@ public abstract class Sprite{
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
 
-	if (dir == RIGHT){
-	    img_v.setScaleX(1);
-	}else if (dir == LEFT){
-	    img_v.setScaleX(-1);
-	}
+
     }
 }

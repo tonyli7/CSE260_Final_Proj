@@ -46,7 +46,7 @@ public class Movement{
 	sprite.setDir(dir);
 	sprite.setForm((sprite.getForm() + 1) % (temp.length * 2));
 	sprite.setCurrImg(temp[sprite.getForm() / 2]);
-
+	
 	if (dir == Sprite.UP){
 	    sprite.changeXY(0, -1);
 	}
@@ -62,6 +62,16 @@ public class Movement{
 	sprite.setForm(form);
 	sprite.update();
 	sprite.setForm(0);
+    }
+
+    public static void attack(Player player){
+	Image[] temp = player.getAttackImgs(player.getDir());
+
+
+	for(int i = 0; i < temp.length*1000; i++){
+	    player.setCurrImg(temp[i%(temp.length)]);
+	    player.update();
+	}
     }
 
     

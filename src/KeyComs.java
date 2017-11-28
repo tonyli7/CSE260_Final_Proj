@@ -32,6 +32,9 @@ public class KeyComs extends AnimationTimer{
 	if (!right_pressed && !left_pressed && !up_pressed && !down_pressed){
 	    Movement.stop(player, 3);
 	}
+	if (z_pressed){
+	    Movement.attack(player);
+	}
 	
     }
     
