@@ -64,14 +64,11 @@ public class Movement{
 	sprite.setForm(0);
     }
 
-    public static void attack(Player player){
-	Image[] temp = player.getAttackImgs(player.getDir());
-
-
-	for(int i = 0; i < temp.length*1000; i++){
-	    player.setCurrImg(temp[i%(temp.length)]);
-	    player.update();
-	}
+    public static void attack(Player player, Image[] attack_imgs, int attack_form){
+	
+	player.setCurrImg(attack_imgs[attack_form]);
+	player.update();
+	
     }
 
     

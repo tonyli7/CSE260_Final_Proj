@@ -1,4 +1,5 @@
 import javafx.animation.AnimationTimer;
+import javafx.scene.image.Image;
 public class KeyComs extends AnimationTimer{
 
     public static boolean right_pressed;
@@ -8,6 +9,7 @@ public class KeyComs extends AnimationTimer{
     public static boolean z_pressed;
     public static boolean enter_pressed;
     public static boolean shift_pressed;
+    private int attack_form = 0;
     private Player player;
 
     public KeyComs(Player player){
@@ -33,9 +35,14 @@ public class KeyComs extends AnimationTimer{
 	    Movement.stop(player, 3);
 	}
 	if (z_pressed){
-	    Movement.attack(player);
-	}
+	    
+	    Image[] attack_imgs = player.getAttackImgs(player.getDir());
+	    Movement.attack(player, attack_imgs, attack_form);
+	    attack_form = (attack_form + 1) % attack_imgs.length;
 	
+	}else{
+	    attack_form = 0;
+	}
     }
     
     

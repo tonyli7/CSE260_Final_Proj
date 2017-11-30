@@ -43,11 +43,12 @@ public abstract class Sprite{
 	setXY(start_x, start_y);
 
 	form = 0;
-	img_v = new ImageView(down_imgs[0]);
+	curr_img = down_imgs[0];
+	img_v = new ImageView(curr_img);
 
-	img_v.setPreserveRatio(true);
-	img_v.setFitHeight(40);
-	//img_v.setFitWidth(24);
+	//img_v.setPreserveRatio(true);
+	img_v.setFitHeight(curr_img.getHeight()*2);
+	img_v.setFitWidth(curr_img.getWidth()*2);
 	
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
@@ -116,9 +117,11 @@ public abstract class Sprite{
     
     public void update(){
 	img_v.setImage(curr_img);
+	img_v.setFitWidth(curr_img.getWidth()*1.5);
+	img_v.setFitHeight(curr_img.getHeight()*1.5);
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
-
+	
 
     }
 }
