@@ -56,6 +56,14 @@ public class Movement{
 	sprite.update();
     }
 
+    public static void unitMove(Sprite sprite, int dir){
+	if (dir == Sprite.UP || dir == Sprite.DOWN){
+	    unitMoveY(sprite, dir);
+	}else{
+	    unitMoveX(sprite, dir);
+	}
+    }
+    
     public static void stop(Sprite sprite, int form){
 	Image[] temp = sprite.getImgs(sprite.getDir());
 	sprite.setCurrImg(temp[form]);
