@@ -58,17 +58,18 @@ public class KeyComs extends AnimationTimer{
 	    frontier.remove((Integer)Sprite.DOWN);
 	}
 	if (!right_pressed && !left_pressed && !up_pressed && !down_pressed){
-	    Movement.stop(player, 3);
+	    Movement.stop(player, 0);
 	}
 	
 	if (z_pressed && !attacking){
 	    
 	    Image[] attack_imgs = player.getAttackImgs(player.getDir());
-	    Movement.attack(player, attack_imgs, attack_form);
-	    attack_form = (attack_form + 1) % attack_imgs.length;
+	    Movement.attack(player, attack_imgs, attack_form/3 % attack_imgs.length);
+	    attack_form++;
 	    
-	    System.out.println(attack_form);
-	    if (attack_form == attack_imgs.length - 1){
+	    
+	    
+	    if (attack_form/3 == attack_imgs.length - 1){
 		attacking = true;
 	    }
 	}
