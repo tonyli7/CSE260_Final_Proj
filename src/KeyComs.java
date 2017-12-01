@@ -11,15 +11,17 @@ public class KeyComs extends AnimationTimer{
     public static boolean z_pressed;
     public static boolean enter_pressed;
     public static boolean shift_pressed;
+    
     private int attack_form;
     private Player player;
+    private boolean attacking;
     private LinkedList<Integer> frontier;
 
     public KeyComs(Player player){
 	this.player = player;
 	attack_form = 0;
 	frontier = new LinkedList<Integer>();
-
+	attacking = false;
     }
     
 
@@ -59,14 +61,23 @@ public class KeyComs extends AnimationTimer{
 	    Movement.stop(player, 3);
 	}
 	
-	if (z_pressed){
+	if (z_pressed && !attacking){
 	    
 	    Image[] attack_imgs = player.getAttackImgs(player.getDir());
 	    Movement.attack(player, attack_imgs, attack_form);
 	    attack_form = (attack_form + 1) % attack_imgs.length;
-	
-	}else{
+	    
+	    System.out.println(attack_form);
+	    if (attack_form == attack_imgs.length - 1){
+		attacking = true;
+	    }
+	}
+	if (!z_pressed){
 	    attack_form = 0;
+	    if (attacking){
+		attacking = false;
+	    
+	    }
 	}
 	
     }

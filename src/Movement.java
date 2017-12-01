@@ -26,7 +26,7 @@ public class Movement{
 	}
     }
 
-    public static void unitMoveX(Sprite sprite, int dir){
+    private static void unitMoveX(Sprite sprite, int dir){
 	Image[] temp = sprite.getImgs(dir);
 	sprite.setDir(dir);
 	sprite.setForm((sprite.getForm() + 1) % (temp.length * 2));
@@ -41,7 +41,7 @@ public class Movement{
 	sprite.update();
     }
 
-    public static void unitMoveY(Sprite sprite, int dir){
+    private static void unitMoveY(Sprite sprite, int dir){
 	Image[] temp = sprite.getImgs(dir);
 	sprite.setDir(dir);
 	sprite.setForm((sprite.getForm() + 1) % (temp.length * 2));
