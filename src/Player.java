@@ -9,7 +9,7 @@ public class Player extends Sprite{
     private Image[] attack_left_imgs;
     private Image[] attack_up_imgs;
     private Image[] attack_down_imgs;
-    
+    private ImageView img_v_weapon;
     
     public Player(String name, String player_dir, double start_x, double start_y){
 	super(player_dir, start_x, start_y);
@@ -35,6 +35,8 @@ public class Player extends Sprite{
 	loadImgs(attack_left_imgs, num_attack_left_imgs, player_dir, "/SlashingLeft/");
 	loadImgs(attack_up_imgs, num_attack_up_imgs, player_dir, "/SlashingUp/");
 	loadImgs(attack_down_imgs, num_attack_down_imgs, player_dir, "/SlashingDown/");
+
+	img_v_weapon = new ImageView(new Image("img/" + player_dir + "/Items/Equips/sword.png"));
 	
     }
 
@@ -49,5 +51,7 @@ public class Player extends Sprite{
 	}
     }
 
-   
+    public ImageView getWeaponImageView(){
+	return img_v_weapon;
+    }
 }
