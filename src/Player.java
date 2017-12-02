@@ -1,6 +1,7 @@
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.io.File;
+
 public class Player extends Sprite{
     private int health;
     private int rupees;
@@ -9,7 +10,7 @@ public class Player extends Sprite{
     private Image[] attack_left_imgs;
     private Image[] attack_up_imgs;
     private Image[] attack_down_imgs;
-    private ImageView img_v_weapon;
+    private Weapon sword;
     
     public Player(String name, String player_dir, double start_x, double start_y){
 	super(player_dir, start_x, start_y);
@@ -36,7 +37,8 @@ public class Player extends Sprite{
 	loadImgs(attack_up_imgs, num_attack_up_imgs, player_dir, "/SlashingUp/");
 	loadImgs(attack_down_imgs, num_attack_down_imgs, player_dir, "/SlashingDown/");
 
-	img_v_weapon = new ImageView(new Image("img/" + player_dir + "/Items/Equips/sword.png"));
+	sword = new Weapon();
+
 	
     }
 
@@ -51,7 +53,8 @@ public class Player extends Sprite{
 	}
     }
 
-    public ImageView getWeaponImageView(){
-	return img_v_weapon;
+    public Weapon getWeapon(){
+	return sword;
     }
+
 }

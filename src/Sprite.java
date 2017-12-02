@@ -20,7 +20,8 @@ public abstract class Sprite{
     protected ImageView img_v;
     protected int dir;
     protected int form;
-   
+    protected double height;
+    protected double width;
     
 
     
@@ -44,11 +45,14 @@ public abstract class Sprite{
 
 	form = 0;
 	curr_img = down_imgs[0];
+	height = curr_img.getHeight() * 2;
+	width = curr_img.getWidth() * 2;
+	
 	img_v = new ImageView(curr_img);
 
-	//img_v.setPreserveRatio(true);
-	img_v.setFitHeight(curr_img.getHeight()*2);
-	img_v.setFitWidth(curr_img.getWidth()*2);
+	
+	img_v.setFitHeight(height);
+	img_v.setFitWidth(width);
 	
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
@@ -113,6 +117,14 @@ public abstract class Sprite{
 
     public ImageView getImageView(){
 	return img_v;
+    }
+
+    public double getHeight(){
+	return height;
+    }
+
+    public double getWidth(){
+	return width;
     }
     
     public void update(){

@@ -1,0 +1,23 @@
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import javafx.scene.transform.Rotate;
+import java.io.File;
+
+public class Weapon{
+
+    private ImageView img_v;
+    
+    public Weapon(){
+
+	Image img = new Image("img/Link/Items/Equips/sword.png");
+	img_v = new ImageView(sword);
+	img_v.setFitHeight(sword.getHeight() * 1.5);
+	img_v.setFitWidth(sword.getWidth() * 1.5);
+	
+    }
+
+    public ImageView getImageView(){
+	return img_v;
+    }
+    
+}

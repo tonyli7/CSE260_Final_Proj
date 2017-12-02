@@ -1,4 +1,8 @@
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.transform.Rotate;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 public class Movement{
 
     public static void move(Sprite sprite, double x_units, double y_units, int dir, int form){
@@ -75,6 +79,24 @@ public class Movement{
     public static void attack(Player player, Image[] attack_imgs, int attack_form){
 	
 	player.setCurrImg(attack_imgs[attack_form]);
+
+	Weapon sword = player.getWeapon();
+	Rotate rotation = sword.getRotation();
+	
+	ImageView img_v_player = player.getImageView();
+	
+	DoubleProperty DP_x = new SimpleDoubleProperty(img_v_player.xProperty().getValue() + player.getWidth()/2);
+	
+	DoubleProperty DP_y = new SimpleDoubleProperty(img_v_player.yProperty().getValue() + player.getHeight()/2);
+	
+	rotation.pivotXProperty().bind(DP_x);
+	rotation.pivotYProperty().bind(DP_y);
+	
+	rotation.setAngle(90/attack_imgs.length * attack_form + 90);
+	
+	//sword.getRotation().setRotate(90/attack_imgs.length * attack_form + 45);
+	sword.setX(player.getX() + player.getWidth()/3);
+	sword.setY(player.getY());
 	player.update();
 	
     }

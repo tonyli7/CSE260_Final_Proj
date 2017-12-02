@@ -15,6 +15,8 @@ import javafx.event.EventHandler;
 import javafx.util.Duration;
 import java.util.Random;
 
+import javafx.scene.paint.Color;
+
 public class Demo extends Application {
 
     @Override
@@ -40,10 +42,10 @@ public class Demo extends Application {
 	Timeline animation = new Timeline(new KeyFrame(Duration.millis(250), eH));
 	animation.setCycleCount(Timeline.INDEFINITE);
 	*/
-	pane.getChildren().addAll(player.getImageView(), player.getWeaponImageView());
+	pane.getChildren().addAll(player.getImageView(), player.getWeapon().getImageView());
 
 	//animation.play();
-	Scene scene = new Scene(pane, 800, 600);
+	Scene scene = new Scene(pane, 800, 600, Color.BLACK);
 	setKeyPressed(scene);
 	setKeyReleased(scene);
 	
