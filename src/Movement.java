@@ -76,26 +76,47 @@ public class Movement{
 	sprite.setForm(0);
     }
 
+    
     public static void attack(Player player, Image[] attack_imgs, int attack_form){
 	
-	player.setCurrImg(attack_imgs[attack_form]);
+	player.setCurrImg(attack_imgs[attack_form]); // sets attack form
 
 	Weapon sword = player.getWeapon();
 	Rotate rotation = sword.getRotation();
 	
 	ImageView img_v_player = player.getImageView();
-	
+
+	// sets pivot point of rotation
 	DoubleProperty DP_x = new SimpleDoubleProperty(img_v_player.xProperty().getValue() + player.getWidth()/2);
 	
 	DoubleProperty DP_y = new SimpleDoubleProperty(img_v_player.yProperty().getValue() + player.getHeight()/2);
 	
 	rotation.pivotXProperty().bind(DP_x);
 	rotation.pivotYProperty().bind(DP_y);
+
 	
-	rotation.setAngle(165/attack_imgs.length * attack_form);
-	
+	sword.getImageView().toBack(); // moves sword behind the Player
+	int player_dir = player.getDir();
+
+	// rotates and positions sword based on Player direction
+	if (player_dir == Sprite.RIGHT){
+	    rotation.setAngle(180/attack_imgs.length * (attack_form + 1));
+	    
+	}else if (player_dir == Sprite.LEFT){
+	    rotation.setAngle(-180/attack_imgs.length * (attack_form + 1));
+	    
+	}else if (player_dir == Sprite.UP){
+	    rotation.setAngle((180/attack_imgs.length * attack_form - 55));
+	    
+	}else if (player_dir == Sprite.DOWN){
+	    rotation.setAngle((180/attack_imgs.length * attack_form - 235));
+	    
+	}
+
+	// makes sure the sword is always positioned based on Player position
 	sword.setX(player.getX() + player.getWidth()/2);
-	sword.setY(player.getY() - player.getHeight()/6);
+	sword.setY(player.getY() - player.getWidth()/3);
+	
 	player.update();
 	
     }
