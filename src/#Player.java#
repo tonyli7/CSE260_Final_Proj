@@ -39,7 +39,7 @@ public class Player extends Sprite{
 
 	sword = new Weapon();
 
-	img_v.toFront();
+	
 	
     }
 

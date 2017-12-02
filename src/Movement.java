@@ -33,8 +33,8 @@ public class Movement{
     private static void unitMoveX(Sprite sprite, int dir){
 	Image[] temp = sprite.getImgs(dir);
 	sprite.setDir(dir);
-	sprite.setForm((sprite.getForm() + 1) % (temp.length * 2));
-	sprite.setCurrImg(temp[sprite.getForm() / 2]);
+	sprite.setForm((sprite.getForm() + 1) % (temp.length * 5));
+	sprite.setCurrImg(temp[sprite.getForm() / 5]);
 	
 	if (dir == Sprite.LEFT){
 	    sprite.changeXY(-2, 0);
@@ -48,14 +48,14 @@ public class Movement{
     private static void unitMoveY(Sprite sprite, int dir){
 	Image[] temp = sprite.getImgs(dir);
 	sprite.setDir(dir);
-	sprite.setForm((sprite.getForm() + 1) % (temp.length * 2));
-	sprite.setCurrImg(temp[sprite.getForm() / 2]);
+	sprite.setForm((sprite.getForm() + 1) % (temp.length * 5));
+	sprite.setCurrImg(temp[sprite.getForm() / 5]);
 	
 	if (dir == Sprite.UP){
-	    sprite.changeXY(0, -1);
+	    sprite.changeXY(0, -2);
 	}
 	if (dir == Sprite.DOWN){
-	    sprite.changeXY(0, 1);
+	    sprite.changeXY(0, 2);
 	}
 	sprite.update();
     }
@@ -92,11 +92,10 @@ public class Movement{
 	rotation.pivotXProperty().bind(DP_x);
 	rotation.pivotYProperty().bind(DP_y);
 	
-	rotation.setAngle(90/attack_imgs.length * attack_form + 90);
+	rotation.setAngle(165/attack_imgs.length * attack_form);
 	
-	//sword.getRotation().setRotate(90/attack_imgs.length * attack_form + 45);
-	sword.setX(player.getX() + player.getWidth()/3);
-	sword.setY(player.getY());
+	sword.setX(player.getX() + player.getWidth()/2);
+	sword.setY(player.getY() - player.getHeight()/6);
 	player.update();
 	
     }

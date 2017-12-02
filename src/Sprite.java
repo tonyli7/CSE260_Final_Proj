@@ -56,6 +56,7 @@ public abstract class Sprite{
 	
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
+
     }
 
     protected void loadImgs(Image[] imgs,int num, String sprite_dir, String folder){

@@ -61,27 +61,26 @@ public class KeyComs extends AnimationTimer{
 	    Movement.stop(player, 0);
 	}
 	
-	if ((z_pressed || attack_form > 0)&& !attacking){
+	if ((z_pressed || attack_form > 0) && !attacking){
 
-	   
-	    
+	    player.getWeapon().display(true);
 	    Image[] attack_imgs = player.getAttackImgs(player.getDir());
-	    if (attack_form/2 == attack_imgs.length - 1){
+	    if (attack_form == attack_imgs.length - 1){
 		attacking = true;
+		attack_form = 0;
+	    }else{
+		attack_form++;
+		Movement.attack(player, attack_imgs, attack_form % attack_imgs.length);
 	    }
-	    Movement.attack(player, attack_imgs, attack_form/2 % attack_imgs.length);
-	    attack_form++;
+	    //attack_form++;
 	    
 	    
 	    
 	    
 	}
-	if (!z_pressed){
-	    attack_form = 0;
-	    if (attacking){
-		attacking = false;
-	    
-	    }
+	if (!z_pressed && attacking){
+	    player.getWeapon().display(false);
+	    attacking = false;
 	}
 	
     }

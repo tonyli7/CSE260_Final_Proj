@@ -42,7 +42,7 @@ public class Demo extends Application {
 	Timeline animation = new Timeline(new KeyFrame(Duration.millis(250), eH));
 	animation.setCycleCount(Timeline.INDEFINITE);
 	*/
-	pane.getChildren().addAll(player.getImageView(), player.getWeapon().getImageView());
+	pane.getChildren().addAll(player.getWeapon().getImageView(), player.getImageView());
 
 	//animation.play();
 	Scene scene = new Scene(pane, 800, 600, Color.BLACK);

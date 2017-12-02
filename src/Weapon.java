@@ -11,9 +11,10 @@ public class Weapon{
 
 	Image img = new Image("img/Link/Items/Equips/sword.png");
 	img_v = new ImageView(img);
-	img_v.setFitHeight(img.getHeight() * 1.5);
-	img_v.setFitWidth(img.getWidth() * 1.5);
-
+	img_v.setFitHeight(img.getHeight() * 1.8);
+	img_v.setFitWidth(img.getWidth());
+	//img_v.toBack();
+	
 	rotation = new Rotate();
 	img_v.getTransforms().add(rotation);
 	rotation.setAngle(90);
@@ -34,5 +35,9 @@ public class Weapon{
 
     public void setY(double new_y){
 	img_v.setY(new_y);
+    }
+
+    public void display(boolean isVisible){
+	img_v.setVisible(isVisible);
     }
 }
