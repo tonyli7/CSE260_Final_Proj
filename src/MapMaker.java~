@@ -1,0 +1,104 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.input.MouseButton;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import java.io.File;
+public class MapMaker extends Application{
+    @Override
+    public void start(Stage primaryStage){
+
+	//GridPane map = new GridPane();
+	Pane map = new Pane();
+
+	File tile_f = new File("img/Tiles/Outside/");
+	String[] tiles = tile_f.list();
+	int num_tiles = tiles.length;
+
+	Cursor default_cursor = map.getCursor();
+	
+	ImageView mouse_tile = new ImageView("img/Tiles/Outside/Bush.png");
+
+	// Tile placement grid;
+	for (int row = 0; row < 608/32; row++){ // 19
+	    for (int col = 0; col < 800/32; col++){ // 25
+		Rectangle rect = new Rectangle(col*32, row*32, 32, 32);
+		rect.setFill(Color.WHITE);
+		rect.setStroke(Color.BLACK);
+
+		rect.setOnMouseEntered(e ->{
+			if (rect.getFill().equals(Color.WHITE)){
+			    rect.setFill(Color.ORANGE);
+			}
+		    });
+
+		rect.setOnMouseExited(e -> {
+			if (rect.getFill().equals(Color.ORANGE)){
+			    rect.setFill(Color.WHITE);
+			}
+		    });
+
+		rect.setOnMouseClicked(e -> {
+			if (e.getButton() == MouseButton.PRIMARY && map.getCursor() instanceof ImageCursor){
+			    
+			    rect.setFill(new ImagePattern(((ImageCursor)map.getCursor()).getImage()));
+			}
+		    });
+		map.getChildren().add(rect);
+		
+	    }
+	}
+	
+	map.setOnMouseClicked(e -> {
+		if (e.getButton() == MouseButton.SECONDARY){
+		    map.setCursor(default_cursor);
+		}
+	    });
+	for (int i = 0; i < num_tiles; i++){
+	    Tile tile = new Tile(tiles[i], "Outside");
+	    tile.setX(25*32 + 30);
+	    tile.setY(i * 32 + i*20);
+	    ImageView img_v = tile.getImageView();
+	    
+	    img_v.setOnMouseClicked(e -> {
+		    map.setCursor(new ImageCursor(img_v.getImage(), 16, 16));
+		    
+		});
+
+	    img_v.setOnMouseEntered(e -> {
+		    img_v.setFitHeight(40);
+		    img_v.setFitWidth(40);
+		});
+
+	    img_v.setOnMouseExited(e -> {
+		    img_v.setFitHeight(32);
+		    img_v.setFitWidth(32);
+		});
+
+	    
+	    map.getChildren().add(tile.getImageView());
+	}
+	
+	Scene scene = new Scene(map, 900, 608);
+
+	primaryStage.setScene(scene);
+	primaryStage.show();	
+    }
+
+    public static void setMouseTile(ImageView mouse_tile, ImageView img_v){
+	Image img = img_v.getImage();
+	mouse_tile = new ImageView(img);
+	mouse_tile.setFitHeight(32);
+	mouse_tile.setFitWidth(32);
+    }
+}

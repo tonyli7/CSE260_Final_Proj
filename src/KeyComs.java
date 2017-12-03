@@ -15,7 +15,7 @@ public class KeyComs extends AnimationTimer{
     private int attack_form;
     private Player player;
     private boolean attacking;
-    private LinkedList<Integer> frontier;
+    private LinkedList<Integer> frontier; // Stores the order of movement commands
 
     public KeyComs(Player player){
 	this.player = player;
@@ -27,12 +27,14 @@ public class KeyComs extends AnimationTimer{
 
     @Override
     public void handle(long timestamp){
-	if (!frontier.isEmpty()){
+	if (!frontier.isEmpty()){ // if the Player is moving
 	    frontier.remove((Integer)(getOppDir(frontier.peek())));
 	    Movement.unitMove(player, frontier.getLast());
 	    Movement.unitMove(player, frontier.getFirst());
 	    
 	}
+
+	// Adding the move commands to the frontier
 	if (right_pressed && !z_pressed && !frontier.contains(Sprite.RIGHT)){
 	    frontier.add(Sprite.RIGHT);
 	}
@@ -45,6 +47,8 @@ public class KeyComs extends AnimationTimer{
 	if (down_pressed && !z_pressed && !frontier.contains(Sprite.DOWN)){
 	    frontier.add(Sprite.DOWN);
 	}
+
+	// While the Player is moving, disable the ability to move in the opposite direction
 	if (!right_pressed && frontier.contains(Sprite.RIGHT)){
 	    frontier.remove((Integer)Sprite.RIGHT);
 	}
@@ -60,7 +64,8 @@ public class KeyComs extends AnimationTimer{
 	if (!right_pressed && !left_pressed && !up_pressed && !down_pressed && !attacking){
 	    Movement.stop(player, 0);
 	}
-	
+
+	// The Player can only attack and show the attack animation if the Player is not moving
 	if ((z_pressed || attack_form > 0) && !attacking && frontier.isEmpty()){
 	    
 	    player.getWeapon().display(true);
@@ -86,7 +91,7 @@ public class KeyComs extends AnimationTimer{
 	
     }
 
-    public int getOppDir(int dir){
+    private int getOppDir(int dir){
 	switch(dir){
 	case Sprite.UP: return Sprite.DOWN;  
 	case Sprite.RIGHT: return Sprite.LEFT;  
