@@ -13,7 +13,6 @@ public class Weapon{
 	img_v = new ImageView(img);
 	img_v.setFitHeight(img.getHeight() * 1.8);
 	img_v.setFitWidth(img.getWidth());
-	//img_v.toBack();
 	
 	rotation = new Rotate();
 	img_v.getTransforms().add(rotation);

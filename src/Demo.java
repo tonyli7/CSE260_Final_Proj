@@ -13,10 +13,18 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
-import java.util.Random;
 
 import javafx.scene.paint.Color;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import java.util.Random;
+import java.util.HashSet;
 public class Demo extends Application {
 
     @Override
@@ -42,7 +50,14 @@ public class Demo extends Application {
 	Timeline animation = new Timeline(new KeyFrame(Duration.millis(250), eH));
 	animation.setCycleCount(Timeline.INDEFINITE);
 	*/
+	try{
+	    loadMap((HashSet<Tile>)readFile("Map1.bin"), pane);
+	}catch (IOException | ClassNotFoundException ex){
+	    System.out.println(ex.getMessage());
+	}
+	
 	pane.getChildren().addAll(player.getWeapon().getImageView(), player.getImageView());
+
 
 	//animation.play();
 	Scene scene = new Scene(pane, 800, 600, Color.BLACK);
@@ -52,7 +67,7 @@ public class Demo extends Application {
 
 	KeyComs key_coms = new KeyComs(player);
 	key_coms.start();
-	
+
 	primaryStage.setScene(scene);
 	primaryStage.show();
 
@@ -128,5 +143,26 @@ public class Demo extends Application {
 		}
 		
 	    });
+    }
+
+    public static HashSet readFile(String map_file) throws IOException, ClassNotFoundException{
+	ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(map_file));
+
+	HashSet map = (HashSet)inStream.readObject();
+	return map;
+    }
+
+    public static void loadMap(HashSet<Tile> map, Pane pane){
+	for (Tile t: map){
+	    ImageView img_v = new ImageView(new Image(t.getPath()));
+	    img_v.setX(t.getX());
+	    img_v.setY(t.getY());
+	    img_v.setFitHeight(32);
+	    img_v.setFitWidth(32);
+	    
+	    pane.getChildren().add(img_v);
+	    img_v.toBack();
+	}
+	
     }
 }

@@ -66,6 +66,7 @@ public class Movement{
 	}else{
 	    unitMoveX(sprite, dir);
 	}
+	sprite.getImageView().toFront();
     }
     
     public static void stop(Sprite sprite, int form){
@@ -95,7 +96,8 @@ public class Movement{
 	rotation.pivotYProperty().bind(DP_y);
 
 	
-	sword.getImageView().toBack(); // moves sword behind the Player
+	sword.getImageView().toFront(); // moves sword to the front
+	img_v_player.toFront(); // moves Player in front of the sword
 	int player_dir = player.getDir();
 
 	// rotates and positions sword based on Player direction
