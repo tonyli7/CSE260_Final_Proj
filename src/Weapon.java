@@ -11,8 +11,8 @@ public class Weapon{
 
 	Image img = new Image("img/Link/Items/Equips/sword.png");
 	img_v = new ImageView(img);
-	img_v.setFitHeight(img.getHeight() * 1.8);
-	img_v.setFitWidth(img.getWidth());
+	img_v.setFitHeight(img.getHeight() * 2.5);
+	img_v.setFitWidth(img.getWidth() * 2);
 	
 	rotation = new Rotate();
 	img_v.getTransforms().add(rotation);

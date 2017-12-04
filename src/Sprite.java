@@ -45,8 +45,8 @@ public abstract class Sprite{
 
 	form = 0;
 	curr_img = down_imgs[0];
-	height = curr_img.getHeight() * 2;
-	width = curr_img.getWidth() * 2;
+	height = curr_img.getHeight()*2;
+	width = curr_img.getWidth()*2;
 	
 	img_v = new ImageView(curr_img);
 
@@ -68,6 +68,14 @@ public abstract class Sprite{
     
     public void setXY(double new_x, double new_y){
 	x_pos = new_x;
+	y_pos = new_y;
+    }
+
+    public void setX(double new_x){
+	x_pos = new_x;
+    }
+
+    public void setY(double new_y){
 	y_pos = new_y;
     }
 
@@ -130,8 +138,8 @@ public abstract class Sprite{
     
     public void update(){
 	img_v.setImage(curr_img);
-	img_v.setFitWidth(curr_img.getWidth()*1.5);
-	img_v.setFitHeight(curr_img.getHeight()*1.5);
+	img_v.setFitWidth(curr_img.getWidth()*2);
+	img_v.setFitHeight(curr_img.getHeight()*2);
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
 	

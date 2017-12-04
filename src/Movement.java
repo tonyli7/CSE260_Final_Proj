@@ -63,14 +63,58 @@ public class Movement{
     }
 
     public static void unitMove(Sprite sprite, int dir){
-	if (dir == Sprite.UP || dir == Sprite.DOWN){
-	    unitMoveY(sprite, dir);
-	}else{
-	    unitMoveX(sprite, dir);
+	System.out.println(sprite.getHeight());
+	if (!checkCollisions(sprite, Demo.location, dir)){
+	   
+	    if (dir == Sprite.UP || dir == Sprite.DOWN){
+		unitMoveY(sprite, dir);
+	    }else{
+		unitMoveX(sprite, dir);
+	    }
 	}
+
+	
+	
 	sprite.getImageView().toFront();
     }
-    
+
+    private static boolean checkCollisions(Sprite sprite, HashSet<GenericTile> tiles, int dir){
+	for (GenericTile g: tiles){
+	    if (g instanceof Collideable){
+		if (isTouching(sprite, (Collideable)g)){
+		    if (dir == Sprite.UP){
+			sprite.setY(g.getY() + sprite.getHeight() + 7);
+		    }
+		    if (dir == Sprite.DOWN){
+			sprite.setY(g.getY() - sprite.getHeight() - 7);
+		    }
+		    if (dir == Sprite.LEFT){
+			sprite.setX(g.getX() + sprite.getWidth() + 7);
+		    }
+		    if (dir == Sprite.RIGHT){
+			sprite.setX(g.getX() - sprite.getWidth() - 7);
+		    }
+		    
+		    sprite.update();
+		    return true;
+		}
+	    }
+	}
+	return false;
+       
+	
+    }
+
+    private static boolean isTouching(Sprite sprite, Collideable c){
+	ImageView img_v = sprite.getImageView();
+	int padding = 3;
+	return (img_v.contains(c.getX() + padding, c.getY() + padding) ||
+		img_v.contains(c.getX() + c.getWidth() - padding, c.getY() + padding) ||
+		img_v.contains(c.getX() + padding, c.getY() + c.getHeight() - padding) ||
+		img_v.contains(c.getX() + c.getWidth() - padding, c.getY() + c.getHeight() - padding));
+    }
+
+   
     public static void stop(Sprite sprite, int form){
 	Image[] temp = sprite.getImgs(sprite.getDir());
 	sprite.setCurrImg(temp[form]);
@@ -124,8 +168,8 @@ public class Movement{
 
 	// makes sure the sword is always positioned based on Player position
 	sword.setX(player.getX() + player.getWidth()/2);
-	sword.setY(player.getY() - player.getWidth()/3);
-	checkSlashed(player, sword,Demo.location, angle);
+	sword.setY(player.getY() - player.getHeight()/2);
+	checkSlashed(player, sword, Demo.location, angle);
 	player.update();
     }
 
@@ -155,8 +199,7 @@ public class Movement{
 	double real_x = r*Math.cos(rads);
 	double real_y = r*Math.sin(rads);
 
-	System.out.println(pivot_y - real_y);
-	System.out.println(s.getImageView().getY());
+	
 	return s.getImageView().contains(real_x + pivot_x, pivot_y - real_y);
 	
     }

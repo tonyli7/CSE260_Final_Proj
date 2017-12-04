@@ -4,12 +4,12 @@ import java.io.File;
 
 public class Bush extends GenericTile implements Slashable, Collideable{
 
-    private double height;
-    private double width;
+    
     //private ImageView img_v;
 
     public Bush(double x, double y){
 	super("Bush.png", x, y);
+	img_v.setFitHeight(width);
     }
 
     public ImageView getImageView(){
