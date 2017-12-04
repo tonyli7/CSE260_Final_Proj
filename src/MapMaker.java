@@ -35,7 +35,7 @@ public class MapMaker extends Application{
     
     private static Tile curr_tile = new Tile();
 
-    private static File tile_f = new File("img/Tiles/Outside/");
+    private static File tile_f = new File("img/Tiles/");
     private static String[] tiles = tile_f.list();
     private static int num_tiles = tiles.length;
     
@@ -49,7 +49,8 @@ public class MapMaker extends Application{
 
 	gridSetup(pane); // sets up an empty grid
 	tileSetup(pane); // sets up tiles that can be selected
-	// changes the cursor based on selected tile
+	
+	// Allows deselecting of a tile by right-clicking
 	pane.setOnMouseClicked(e -> {
 		if (e.getButton() == MouseButton.SECONDARY){
 		    pane.setCursor(default_cursor);
@@ -60,7 +61,7 @@ public class MapMaker extends Application{
 
 	
 
-
+	// Button that fills all white space with grass
 	Rectangle fillAll = new Rectangle(25*32 + 30, 540, 32, 32);
 	fillAll.setFill(Color.BLACK);
 	fillAll.setOnMouseClicked(e -> {
@@ -68,12 +69,16 @@ public class MapMaker extends Application{
 		
 	    });
 
+	// Button that converts the map into a HashSet,
+	// serializes the HashSet, and exits the map maker
+	
 	Rectangle done = new Rectangle(25*32 + 30, 576, 32, 32);
 	done.setFill(Color.BLUE);
 	done.setOnMouseClicked(e ->{
 		setXY();
 
 		try{
+     
 		    writeToFile(convertToHashSet());
 		}catch (IOException ex){
 		    System.out.println(ex.getMessage());
@@ -143,7 +148,7 @@ public class MapMaker extends Application{
 
     private static void tileSetup(Pane pane){
 		for (int i = 0; i < num_tiles; i++){
-	    Tile tile = new Tile(tiles[i], "Outside");
+	    Tile tile = new Tile(tiles[i]);
 	    
 	    ImageView img_v = new ImageView(new Image(tile.getPath()));
 	    img_v.setX(25*32 + 30);
@@ -172,34 +177,40 @@ public class MapMaker extends Application{
 	    pane.getChildren().add(img_v);
 	}
     }
-    
-    public static void fillDefault(){
+
+    // helper method for fill-all-white-space button
+    private static void fillDefault(){
 	for (Rectangle r: map.keySet()){
 	    if (map.get(r).getPath().equals("")){
-		r.setFill(new ImagePattern(new Image("img/Tiles/Outside/Grass.png")));
-		map.put(r, new Tile("Grass.png","Outside"));
+		r.setFill(new ImagePattern(new Image("img/Tiles/Grass.png")));
+		map.put(r, new Tile("Grass.png"));
 	    }
 	}
     }
 
-    public static void setXY(){
+
+    // helper method for quit-save button
+    // sets the (x,y) cors for each tile in the HashMap
+    private static void setXY(){
 	for (Rectangle r: map.keySet()){
 	    map.get(r).setX(r.getX());
 	    map.get(r).setY(r.getY());
 	}
     }
 
-    public static void writeToFile(HashSet<Tile> final_map) throws IOException{
+    // converts HashSet into a bin
+    private static void writeToFile(HashSet<Tile> final_map) throws IOException{
 	ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream("Map1.bin"));
 	outStream.writeObject(final_map);
 	
     }
 
-    public static HashSet<Tile> convertToHashSet(){
+    // converts HashMap<Rectangle, Tile> into HashSet<Tile>
+    private static HashSet<Tile> convertToHashSet(){
 	HashSet<Tile> final_map = map.entrySet().stream().map(Map.Entry:: getValue).collect(Collectors.toCollection(HashSet:: new));
 
-	//System.out.println(final_map);
+	//map.entrySet().stream().map(Map.Entry:: getValue).forEach(s -> System.out.println(s));
+
 	return final_map;
     }
-   
 }

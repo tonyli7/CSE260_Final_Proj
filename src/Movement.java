@@ -3,6 +3,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+
+import java.util.HashSet;
 public class Movement{
 
     public static void move(Sprite sprite, double x_units, double y_units, int dir, int form){
@@ -101,27 +103,62 @@ public class Movement{
 	int player_dir = player.getDir();
 
 	// rotates and positions sword based on Player direction
+	double angle = 90;
 	if (player_dir == Sprite.RIGHT){
-	    rotation.setAngle(180/attack_imgs.length * (attack_form + 1));
+	    angle = 180/attack_imgs.length * (attack_form + 1);
+	    rotation.setAngle(angle);
 	    
 	}else if (player_dir == Sprite.LEFT){
-	    rotation.setAngle(-180/attack_imgs.length * (attack_form + 1));
+	    angle = -180/attack_imgs.length * (attack_form + 1);
+	    rotation.setAngle(angle);
 	    
 	}else if (player_dir == Sprite.UP){
-	    rotation.setAngle((180/attack_imgs.length * attack_form - 55));
+	    angle = (180/attack_imgs.length * attack_form - 55);
+	    rotation.setAngle(angle);
 	    
 	}else if (player_dir == Sprite.DOWN){
-	    rotation.setAngle((180/attack_imgs.length * attack_form - 235));
+	    angle = (180/attack_imgs.length * attack_form - 235);
+	    rotation.setAngle(angle);
 	    
 	}
 
 	// makes sure the sword is always positioned based on Player position
 	sword.setX(player.getX() + player.getWidth()/2);
 	sword.setY(player.getY() - player.getWidth()/3);
-	
+	checkSlashed(player, sword,Demo.location, angle);
 	player.update();
-	
     }
 
+    private static void checkSlashed(Player player, Weapon sword, HashSet<GenericTile> tiles, double angle){
+	//System.out.println(tiles);
+	for (GenericTile g: tiles){
+	    if (g instanceof Slashable){
+		if (isSlashed(player, sword.getImageView(), (Slashable)g, angle)){
+		    ((Slashable)g).slashed();
+		    System.out.println("dsadasadadadas");
+		}
+	    }
+	}
+    }
+
+    private static boolean isSlashed(Player player, ImageView sword, Slashable s, double angle){
+	double pivot_x = player.getX() + player.getWidth()/2;
+	double pivot_y = player.getY() + player.getHeight()/2;
+
+	double d_x = sword.getX() - pivot_x;
+	double d_y = sword.getY() - pivot_y;
+
+	double r = Math.pow((Math.pow(d_x, 2) + Math.pow(d_y, 2)), 0.5);
+
+	double rads = Math.toRadians(angle);
+
+	double real_x = r*Math.cos(rads);
+	double real_y = r*Math.sin(rads);
+
+	System.out.println(pivot_y - real_y);
+	System.out.println(s.getImageView().getY());
+	return s.getImageView().contains(real_x + pivot_x, pivot_y - real_y);
+	
+    }
     
 }

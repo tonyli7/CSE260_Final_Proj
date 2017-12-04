@@ -27,12 +27,13 @@ import java.util.Random;
 import java.util.HashSet;
 public class Demo extends Application {
 
+    public static HashSet<GenericTile> location = new HashSet<GenericTile>();
+    
     @Override
     public void start(Stage primaryStage) {
 	Random rand = new Random();
-	
+
 	Pane pane = new Pane();
-	
 	Player player = new Player("Link", "Link", 400, 300);
 
 	/*
@@ -50,11 +51,16 @@ public class Demo extends Application {
 	Timeline animation = new Timeline(new KeyFrame(Duration.millis(250), eH));
 	animation.setCycleCount(Timeline.INDEFINITE);
 	*/
+	HashSet<Tile> tiles = new HashSet<Tile>();
+	
 	try{
-	    loadMap((HashSet<Tile>)readFile("Map1.bin"), pane);
+	    tiles = readFile("Map1.bin");
+	    
 	}catch (IOException | ClassNotFoundException ex){
 	    System.out.println(ex.getMessage());
 	}
+
+	location = loadMap(tiles, pane);
 	
 	pane.getChildren().addAll(player.getWeapon().getImageView(), player.getImageView());
 
@@ -152,17 +158,23 @@ public class Demo extends Application {
 	return map;
     }
 
-    public static void loadMap(HashSet<Tile> map, Pane pane){
+    public static HashSet<GenericTile> loadMap(HashSet<Tile> map, Pane pane){
+	HashSet<GenericTile> temp = new HashSet<GenericTile>();
 	for (Tile t: map){
-	    ImageView img_v = new ImageView(new Image(t.getPath()));
-	    img_v.setX(t.getX());
-	    img_v.setY(t.getY());
-	    img_v.setFitHeight(32);
-	    img_v.setFitWidth(32);
-	    
-	    pane.getChildren().add(img_v);
-	    img_v.toBack();
+	    String name = t.toString();
+	    GenericTile new_t = new GenericTile(name, t.getX(), t.getY());
+	    //System.out.println(name);
+	    if (name.equals("Bush.png")){
+		//System.out.println(1);
+		new_t = new Bush(t.getX(), t.getY());
+		System.out.println(new_t);
+		
+	    }
+	    temp.add(new_t);
+
+	    pane.getChildren().add(new_t.getImageView());
 	}
+	return temp;
 	
     }
 }

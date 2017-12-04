@@ -17,8 +17,8 @@ public class Tile implements Serializable, Cloneable{
 	img_path = "";
     }
     
-    public Tile(String name, String setting){
-	img_path = "img/Tiles/" + setting + "/" + name;
+    public Tile(String name){
+	img_path = "img/Tiles/" + name;
 	this.name = name;
     }
 
