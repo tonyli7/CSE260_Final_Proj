@@ -5,6 +5,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 public class Movement{
 
     public static void move(Sprite sprite, double x_units, double y_units, int dir, int form){
@@ -17,7 +18,6 @@ public class Movement{
 	    sprite.changeXY(x_units*3, 0);
 	    sprite.setCurrImg(temp[i % temp.length]);
 	    
-	    
 	    sprite.setForm(i % temp.length);
 	    sprite.update();
 	}
@@ -25,7 +25,6 @@ public class Movement{
 	for (int i = form + 1; i < form + Math.abs(y_units) + 1; i++){
 	    sprite.changeXY(0, y_units*3);
 	    sprite.setCurrImg(temp[i % temp.length]);
-	    
 	    
 	    sprite.setForm(i % temp.length);
 	    sprite.update();
@@ -63,7 +62,6 @@ public class Movement{
     }
 
     public static void unitMove(Sprite sprite, int dir){
-	System.out.println(sprite.getHeight());
 	if (!checkCollisions(sprite, Demo.location, dir)){
 	   
 	    if (dir == Sprite.UP || dir == Sprite.DOWN){
@@ -71,6 +69,7 @@ public class Movement{
 	    }else{
 		unitMoveX(sprite, dir);
 	    }
+	    //System.out.println(dir);
 	}
 
 	
@@ -81,23 +80,20 @@ public class Movement{
     private static boolean checkCollisions(Sprite sprite, HashSet<GenericTile> tiles, int dir){
 	for (GenericTile g: tiles){
 	    if (g instanceof Collideable){
-		if (isTouching(sprite, (Collideable)g)){
-		    if (dir == Sprite.UP){
-			sprite.setY(g.getY() + sprite.getHeight() + 7);
-		    }
-		    if (dir == Sprite.DOWN){
-			sprite.setY(g.getY() - sprite.getHeight() - 7);
-		    }
-		    if (dir == Sprite.LEFT){
-			sprite.setX(g.getX() + sprite.getWidth() + 7);
-		    }
-		    if (dir == Sprite.RIGHT){
-			sprite.setX(g.getX() - sprite.getWidth() - 7);
-		    }
-		    
-		    sprite.update();
-		    return true;
+		int touched = isTouching(sprite, ((Collideable)g));
+		if (touched == 0){
+		    sprite.changeXY(0, 2);
 		}
+		if (touched == 1){
+		    sprite.changeXY(0, -2);
+		}
+		if (touched == 2){
+		    sprite.changeXY(0, 2);
+		}
+		if (touched == 3){
+		    sprite.changeXY(0, -2);
+		}
+		
 	    }
 	}
 	return false;
@@ -105,14 +101,48 @@ public class Movement{
 	
     }
 
+    private static int isTouching(Sprite sprite, Collideable c){
+	//ImageView sprite_img_v = sprite.getImageView();
+	//ImageView obj_img_v = c.getImageView();
+
+	double sprite_x = sprite.getX();
+	double sprite_y = sprite.getY();
+
+	double obj_x = c.getX();
+	double obj_y = c.getY();
+
+	
+	if ((sprite_x <= obj_x + c.getWidth() && sprite_x > obj_x) ||
+	    (sprite_x + sprite.getWidth() <= obj_x + c.getWidth() && sprite_x + sprite.getWidth() > obj_x)){
+	    if (sprite_y <= obj_y + c.getHeight() && sprite_y > obj_y){ //if from bottom
+		return 0;
+	    }
+	    if (sprite_y  + sprite.getHeight() >= obj_y && sprite_y + sprite.getHeight() < obj_y + c.getHeight()){ //if from top
+		return 1;
+	    }
+	}
+	
+	if ((sprite_y <= obj_y + c.getHeight() && sprite_y > obj_y) ||
+	    (sprite_y + sprite.getHeight() <= obj_y + c.getHeight() && sprite_y + sprite.getHeight() > obj_y)){
+	    if (sprite_x <= obj_x + c.getWidth() && sprite_x > obj_x){ // if from right
+		return 2;
+	    }
+	    if (sprite_x + sprite.getWidth() >= obj_x && sprite_x + sprite.getWidth() < obj_x + c.getWidth()){ // if from left
+		return 3;
+	    }
+	}
+	return -1;
+
+	    
+    }
+
+    /*
     private static boolean isTouching(Sprite sprite, Collideable c){
 	ImageView img_v = sprite.getImageView();
-	int padding = 3;
-	return (img_v.contains(c.getX() + padding, c.getY() + padding) ||
-		img_v.contains(c.getX() + c.getWidth() - padding, c.getY() + padding) ||
-		img_v.contains(c.getX() + padding, c.getY() + c.getHeight() - padding) ||
-		img_v.contains(c.getX() + c.getWidth() - padding, c.getY() + c.getHeight() - padding));
+
+	return c.getImageView().intersects(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
     }
+    */
 
    
     public static void stop(Sprite sprite, int form){
@@ -121,6 +151,7 @@ public class Movement{
 	sprite.setForm(form);
 	sprite.update();
 	sprite.setForm(0);
+	//System.out.println(1);
     }
 
     
@@ -175,14 +206,34 @@ public class Movement{
 
     private static void checkSlashed(Player player, Weapon sword, HashSet<GenericTile> tiles, double angle){
 	//System.out.println(tiles);
+	LinkedList<GenericTile> ll = new LinkedList<GenericTile>();
+	ll.addAll(tiles);
+
+	for(int i = 0; i < ll.size(); i++){
+	    GenericTile g = ll.get(i);
+	    if (g instanceof Slashable){
+		if (isSlashed(player, sword.getImageView(), (Slashable)g, angle)){
+		    GenericTile new_g = new GenericTile("Grass.png", g.getX(), g.getY());
+		    //new_g.getImageView().toFront();
+		    tiles.add(new_g);
+		    Demo.pane.getChildren().remove(g.getImageView());
+		    Demo.pane.getChildren().add(new_g.getImageView());
+		    tiles.remove(g);
+		    
+		}
+	    }
+	}
+
+	/*
 	for (GenericTile g: tiles){
 	    if (g instanceof Slashable){
 		if (isSlashed(player, sword.getImageView(), (Slashable)g, angle)){
 		    ((Slashable)g).slashed();
-		    System.out.println("dsadasadadadas");
+		    //System.out.println("dsadasadadadas");
 		}
 	    }
 	}
+	*/
     }
 
     private static boolean isSlashed(Player player, ImageView sword, Slashable s, double angle){

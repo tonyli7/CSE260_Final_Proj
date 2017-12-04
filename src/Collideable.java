@@ -1,3 +1,4 @@
+import javafx.scene.image.ImageView;
 public interface Collideable{
 
     public double getX();
@@ -5,5 +6,5 @@ public interface Collideable{
     public double getWidth();
     public double getHeight();
     public void collided();
-    
+    public ImageView getImageView();
 }

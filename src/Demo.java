@@ -28,12 +28,12 @@ import java.util.HashSet;
 public class Demo extends Application {
 
     public static HashSet<GenericTile> location = new HashSet<GenericTile>();
-    
+    public static Pane pane = new Pane();
     @Override
     public void start(Stage primaryStage) {
 	Random rand = new Random();
 
-	Pane pane = new Pane();
+	//Pane pane = new Pane();
 	Player player = new Player("Link", "Link", 400, 300);
 
 	/*
@@ -167,7 +167,7 @@ public class Demo extends Application {
 	    if (name.equals("Bush.png")){
 		//System.out.println(1);
 		new_t = new Bush(t.getX(), t.getY());
-		System.out.println(new_t);
+		//System.out.println(new_t);
 		
 	    }
 	    temp.add(new_t);
