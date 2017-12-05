@@ -12,8 +12,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.KeyCode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +35,8 @@ import java.io.ObjectOutputStream;
 public class MapMaker extends Application{
 
     private static boolean deselected = true;
+    private static boolean coloring = false;
+    
     private static HashMap<Rectangle, Tile> map = new HashMap<Rectangle, Tile>();
     
     private static Tile curr_tile = new Tile();
@@ -44,6 +49,16 @@ public class MapMaker extends Application{
     public void start(Stage primaryStage){
 
 	Pane pane = new Pane();
+	Scene scene = new Scene(pane, 900, 608);
+
+	scene.setOnKeyPressed(e ->{
+		if (e.getCode() == KeyCode.Z && !coloring){
+		    coloring = true;
+		}else if (e.getCode() == KeyCode.Z && coloring){
+		    coloring = false;
+		}
+		
+	    });
 	
 
 	Cursor default_cursor = pane.getCursor();
@@ -89,7 +104,7 @@ public class MapMaker extends Application{
 	    });
 	
 	pane.getChildren().addAll(fillAll, done);
-	Scene scene = new Scene(pane, 900, 608);
+
 
 	primaryStage.setScene(scene);
 	primaryStage.show();	
@@ -104,6 +119,7 @@ public class MapMaker extends Application{
 		rect.setStroke(Color.BLACK);
 
 		// Hover functions
+		/*
 		rect.setOnMouseEntered(e ->{
 			if (rect.getFill().equals(Color.WHITE)){
 			    rect.setFill(Color.ORANGE);
@@ -116,12 +132,13 @@ public class MapMaker extends Application{
 			    rect.setFill(Color.WHITE);
 			}
 		    });
-
+		
+		*/
 		// Clicking functions
-		rect.setOnMouseClicked(e -> {
-			if (e.getButton() == MouseButton.PRIMARY &&
-			    !deselected &&
-			    !(rect.getFill() instanceof ImagePattern)){
+		rect.setOnMouseEntered(e -> {
+			System.out.println(coloring);
+			if (coloring &&
+			    !deselected){
 			    
 			    rect.setFill(new ImagePattern(((ImageCursor)pane.getCursor()).getImage()));
 			    try{
@@ -133,6 +150,7 @@ public class MapMaker extends Application{
 			    
 			}else if (e.getButton() == MouseButton.SECONDARY &&
 				  deselected){
+
 			    
 			    rect.setFill(Color.WHITE);
 			    map.put(rect, new Tile());
@@ -140,11 +158,18 @@ public class MapMaker extends Application{
 			}
 			
 		    });
+
+		
+	
+
+		
 		map.put(rect, new Tile());
 		pane.getChildren().add(rect);
 		
 	    }
 	}
+
+
     }
 
     private static void tileSetup(Pane pane){
