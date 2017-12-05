@@ -16,6 +16,7 @@ import javafx.util.Duration;
 
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,9 +26,14 @@ import java.io.ObjectOutputStream;
 
 import java.util.Random;
 import java.util.LinkedList;
+import java.util.HashSet;
+
 public class Demo extends Application {
 
-    public static LinkedList<GenericTile> location = new LinkedList<GenericTile>();
+    public static Location curr_location = new Location();
+    public static LinkedList<GenericTile> curr_tiles = new LinkedList<GenericTile>();
+    public static HashSet<Location> world = new HashSet<Location>();
+    
     public static Pane pane = new Pane();
     @Override
     public void start(Stage primaryStage) {
@@ -35,17 +41,9 @@ public class Demo extends Application {
 
 	//Pane pane = new Pane();
 	Player player = new Player("Link", "Link", 400, 300);
-	LinkedList<Tile> tiles = new LinkedList<Tile>();
-	
-	try{
-	    tiles = readFile("maps/Map0.bin");
-	    
-	}catch (IOException | ClassNotFoundException ex){
-	    System.out.println(ex.getMessage());
-	}
 
-	location = loadMap(tiles, pane);
 	
+	loadLocations();
 	pane.getChildren().addAll(player.getWeapon().getImageView(), player.getImageView());
 
 
@@ -135,14 +133,31 @@ public class Demo extends Application {
 	    });
     }
 
-    public static LinkedList readFile(String map_file) throws IOException, ClassNotFoundException{
+    public static LinkedList<Tile> readFile(String map_file) throws IOException, ClassNotFoundException{
 	ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(map_file));
 
 	LinkedList map = (LinkedList)inStream.readObject();
 	return map;
     }
 
-    public static LinkedList<GenericTile> loadMap(LinkedList<Tile> map, Pane pane){
+    public static void loadMap(Location location, Pane pane){
+
+	LinkedList<GenericTile> temp = curr_location.getMap();
+	for (GenericTile t: temp){
+	    pane.getChildren().remove(t.getImageView());
+	}
+
+	temp = location.getMap();
+
+	curr_tiles = (LinkedList<GenericTile>)temp.clone();
+	for (GenericTile t: temp){
+	    pane.getChildren().add(t.getImageView());
+	}
+	
+	curr_location = location;
+    }
+
+    private static LinkedList<GenericTile> convertMap(LinkedList<Tile> map){
 	LinkedList<GenericTile> temp = new LinkedList<GenericTile>();
 	for (Tile t: map){
 	    String name = t.toString();
@@ -155,14 +170,36 @@ public class Demo extends Application {
 		
 	    }
 	    temp.add(new_t);
-
-	    pane.getChildren().add(new_t.getImageView());
 	}
 	return temp;
-	
     }
+    
 
     public static void loadLocations(){
+
+	File map_dir = new File("maps/");
+	String[] maps = map_dir.list();
+	int num_maps = maps.length;
+
+	for (String s: maps){
+	    LinkedList<Tile> tiles = new LinkedList<Tile>();
+		
+	    try{
+		tiles = readFile("maps/Map0.bin");
+		
+	    }catch (IOException | ClassNotFoundException ex){
+		System.out.println(ex.getMessage());
+	    }
+
+	  
+	    Location new_loc = new Location(convertMap(tiles));
+	    if (world.isEmpty()){
+		curr_location = new_loc;
+		curr_tiles = (LinkedList<GenericTile>) new_loc.getMap().clone();
+		loadMap(curr_location, pane);
+	    }
+	    world.add(new_loc);
+	}
 	
     }
 }

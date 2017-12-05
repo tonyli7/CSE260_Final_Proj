@@ -62,7 +62,7 @@ public class Movement{
     }
 
     public static void unitMove(Sprite sprite, int dir){
-	if (!checkCollisions(sprite, Demo.location, dir)){
+	if (!checkCollisions(sprite, Demo.curr_tiles, dir)){
 	   
 	    if (dir == Sprite.UP || dir == Sprite.DOWN){
 		unitMoveY(sprite, dir);
@@ -215,7 +215,7 @@ public class Movement{
 	// makes sure the sword is always positioned based on Player position
 	sword.setX(player.getX() + player.getWidth()/2);
 	sword.setY(player.getY() - player.getHeight()/2);
-	checkSlashed(player, sword, Demo.location, angle);
+	checkSlashed(player, sword, Demo.curr_tiles, angle);
 	player.update();
     }
 

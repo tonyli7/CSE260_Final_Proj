@@ -1,13 +1,21 @@
 import javafx.scene.layout.Pane;
 
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.HashMap;
 
 public class Location{
-    private HashSet<GenericTile> map;
-    private HashMap<GenericTile, Location> links;
+    private LinkedList<GenericTile> map;
     
-    public Location(HashSet<GenericTile> map, HashMap<GenericTile, Location> links){
+    private HashMap<GenericTile, Location> links;
+
+    public Location(){
+    }
+    
+    public Location(LinkedList<GenericTile> map){
+	this.map = map;
+    }
+    
+    public Location(LinkedList<GenericTile> map, HashMap<GenericTile, Location> links){
 	this.map = map;
     }
 
@@ -18,7 +26,7 @@ public class Location{
 	map.remove(old);
     }
 
-    public HashSet<GenericTile> getMap(){
+    public LinkedList<GenericTile> getMap(){
 	return map;
     }
 
