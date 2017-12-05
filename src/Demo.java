@@ -41,7 +41,7 @@ public class Demo extends Application {
 
 	//Pane pane = new Pane();
 	Player player = new Player("Link", "Link", 400, 300);
-
+	
 	
 	loadLocations();
 	pane.getChildren().addAll(player.getWeapon().getImageView(), player.getImageView());
@@ -185,7 +185,7 @@ public class Demo extends Application {
 	    LinkedList<Tile> tiles = new LinkedList<Tile>();
 		
 	    try{
-		tiles = readFile("maps/Map0.bin");
+		tiles = readFile("maps/" + s + "/" + s + ".bin");
 		
 	    }catch (IOException | ClassNotFoundException ex){
 		System.out.println(ex.getMessage());

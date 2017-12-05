@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 import java.lang.CloneNotSupportedException;
+import java.lang.SecurityException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -200,11 +201,20 @@ public class MapMaker extends Application{
 
     // converts HashSet into a bin
     private static void writeToFile(LinkedList<Tile> final_map) throws IOException{
+	
 	 File map_dir = new File("maps/");
 	 String[] maps = map_dir.list();
 	 int num_maps = maps.length;
+
+	 File new_dir = new File("maps/Map" + num_maps);
+	 try{
+	     new_dir.mkdir();
+	     
+	 }catch (SecurityException ex){
+	     System.out.println(ex.getMessage());
+	 }
 	
-	ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream("maps/Map" + num_maps + ".bin"));
+	ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream("maps/Map" + num_maps + "/Map" + num_maps + ".bin"));
 	outStream.writeObject(final_map);
 	
     }
