@@ -81,17 +81,19 @@ public class Movement{
 	for (GenericTile g: tiles){
 	    if (g instanceof Collideable){
 		int touched = isTouching(sprite, ((Collideable)g));
-		if (touched == 0){
+	
+		if (touched == Sprite.DOWN){
 		    sprite.changeXY(0, 2);
 		}
-		if (touched == 1){
+		if (touched == Sprite.UP){
+		   
 		    sprite.changeXY(0, -2);
 		}
-		if (touched == 2){
-		    sprite.changeXY(0, 2);
+		if (touched == Sprite.RIGHT){
+		    sprite.changeXY(2, 0);
 		}
-		if (touched == 3){
-		    sprite.changeXY(0, -2);
+		if (touched == Sprite.LEFT){
+		    sprite.changeXY(-2, 0);
 		}
 		
 	    }
@@ -102,48 +104,61 @@ public class Movement{
     }
 
     private static int isTouching(Sprite sprite, Collideable c){
-	//ImageView sprite_img_v = sprite.getImageView();
-	//ImageView obj_img_v = c.getImageView();
 
-	double sprite_x = sprite.getX();
-	double sprite_y = sprite.getY();
+	ImageView sprite_img_v = sprite.getImageView();
+	ImageView c_img_v = c.getImageView();
 
-	double obj_x = c.getX();
-	double obj_y = c.getY();
+	double sprite_x = sprite_img_v.getX();
+	double sprite_y = sprite_img_v.getY();
+
+	double sprite_right = sprite_img_v.getFitWidth() + sprite_x;
+	double sprite_bot = sprite_img_v.getFitHeight() + sprite_y;
+	
+	double c_x = c_img_v.getX();
+	double c_y = c_img_v.getY();
+
+	double c_right = c_img_v.getFitWidth() + c_x;
+	double c_bot = c_img_v.getFitHeight() + c_y;
+
+
+	double b_collision = Math.abs(c_bot - sprite_y);
+	double t_collision = Math.abs(sprite_bot - c_y);
+	double l_collision = Math.abs(sprite_right - c_x);
+	double r_collision = Math.abs(c_right - sprite_x);
 
 	
-	if ((sprite_x <= obj_x + c.getWidth() && sprite_x > obj_x) ||
-	    (sprite_x + sprite.getWidth() <= obj_x + c.getWidth() && sprite_x + sprite.getWidth() > obj_x)){
-	    if (sprite_y <= obj_y + c.getHeight() && sprite_y > obj_y){ //if from bottom
-		return 0;
-	    }
-	    if (sprite_y  + sprite.getHeight() >= obj_y && sprite_y + sprite.getHeight() < obj_y + c.getHeight()){ //if from top
-		return 1;
-	    }
-	}
+	if (sprite_x < c_right &&
+	    sprite_right > c_x &&
+	    sprite_y < c_bot &&
+	    sprite_bot > c_y){
+
+	    // Collision detected
 	
-	if ((sprite_y <= obj_y + c.getHeight() && sprite_y > obj_y) ||
-	    (sprite_y + sprite.getHeight() <= obj_y + c.getHeight() && sprite_y + sprite.getHeight() > obj_y)){
-	    if (sprite_x <= obj_x + c.getWidth() && sprite_x > obj_x){ // if from right
-		return 2;
+	
+	    
+	    if (t_collision < b_collision && t_collision < l_collision && t_collision < r_collision ){
+		//Top collision
+		return Sprite.UP;
+	    
 	    }
-	    if (sprite_x + sprite.getWidth() >= obj_x && sprite_x + sprite.getWidth() < obj_x + c.getWidth()){ // if from left
-		return 3;
+	    if (b_collision < t_collision && b_collision < l_collision && b_collision < r_collision){
+		//bottom collision
+		return Sprite.DOWN;
+	    }
+	    if (l_collision < r_collision && l_collision < t_collision && l_collision < b_collision){
+		//Left collision
+		return Sprite.LEFT;
+	    }
+	    if (r_collision < l_collision && r_collision < t_collision && r_collision < b_collision ){
+		//Right collision
+		return Sprite.RIGHT;
 	    }
 	}
+
 	return -1;
 
 	    
     }
-
-    /*
-    private static boolean isTouching(Sprite sprite, Collideable c){
-	ImageView img_v = sprite.getImageView();
-
-	return c.getImageView().intersects(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
-    }
-    */
-
    
     public static void stop(Sprite sprite, int form){
 	Image[] temp = sprite.getImgs(sprite.getDir());
@@ -223,17 +238,6 @@ public class Movement{
 		}
 	    }
 	}
-
-	/*
-	for (GenericTile g: tiles){
-	    if (g instanceof Slashable){
-		if (isSlashed(player, sword.getImageView(), (Slashable)g, angle)){
-		    ((Slashable)g).slashed();
-		    //System.out.println("dsadasadadadas");
-		}
-	    }
-	}
-	*/
     }
 
     private static boolean isSlashed(Player player, ImageView sword, Slashable s, double angle){

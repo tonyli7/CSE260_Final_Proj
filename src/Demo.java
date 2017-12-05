@@ -35,22 +35,6 @@ public class Demo extends Application {
 
 	//Pane pane = new Pane();
 	Player player = new Player("Link", "Link", 400, 300);
-
-	/*
-	Monster tentacles = new Monster("Tentacles", 2, "Tentacles", 200, 200); 
-
-	EventHandler<ActionEvent> eH = e -> {
-	    if (rand.nextInt(2) == 0){
-		Movement.move(tentacles, rand.nextFloat()*4 - 2, 0, Sprite.RIGHT, tentacles.getForm());
-	    }else{
-		Movement.move(tentacles, 0, rand.nextFloat()*4 - 2, Sprite.RIGHT, tentacles.getForm());
-	    }
-		
-	};
-
-	Timeline animation = new Timeline(new KeyFrame(Duration.millis(250), eH));
-	animation.setCycleCount(Timeline.INDEFINITE);
-	*/
 	HashSet<Tile> tiles = new HashSet<Tile>();
 	
 	try{
