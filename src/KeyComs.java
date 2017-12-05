@@ -29,8 +29,8 @@ public class KeyComs extends AnimationTimer{
     public void handle(long timestamp){
 	if (!frontier.isEmpty()){ // if the Player is moving
 	    frontier.remove((Integer)(getOppDir(frontier.peek())));
-	    Movement.unitMove(player, frontier.getLast());
-	    Movement.unitMove(player, frontier.getFirst());
+	    Movement.unitMove(player, player, frontier.getLast());
+	    Movement.unitMove(player, player, frontier.getFirst());
 	    
 	}
 

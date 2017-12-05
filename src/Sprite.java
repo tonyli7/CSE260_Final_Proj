@@ -5,7 +5,7 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.io.File;
-public abstract class Sprite{
+public abstract class Sprite implements Collideable{
 
     public static final int UP = 0;
     public static final int RIGHT = 1;
@@ -173,7 +173,7 @@ public abstract class Sprite{
 	img_v.setFitHeight(curr_img.getHeight()*1.5);
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
-	img_v.toFront();
+	//img_v.toFront();
 
     }
 }

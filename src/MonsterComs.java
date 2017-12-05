@@ -7,8 +7,10 @@ import java.util.Random;
 public class MonsterComs extends AnimationTimer{
 
     private LinkedList<Monster> mons;
-    public MonsterComs(LinkedList<Monster> mons){
+    private Player player;
+    public MonsterComs(LinkedList<Monster> mons, Player player){
 	this.mons = mons;
+	this.player = player;
 	
     }
 
@@ -20,7 +22,7 @@ public class MonsterComs extends AnimationTimer{
 	    
 	    Monster m = mons.get(i);
 	    
-	    Movement.unitMove(m, m.getDir(), 20);
+	    Movement.unitMove(m, player, m.getDir(), 20);
 	}
 	
     }

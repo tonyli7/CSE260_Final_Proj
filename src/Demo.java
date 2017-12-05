@@ -59,7 +59,7 @@ public class Demo extends Application {
 	
 
 	KeyComs key_coms = new KeyComs(player);
-	MonsterComs mon_coms = new MonsterComs(curr_location.getMonsters());
+	MonsterComs mon_coms = new MonsterComs(curr_location.getMonsters(), player);
 	System.out.println(curr_location.getMonsters().get(0).getSteps());
 	key_coms.start();
 	mon_coms.start();

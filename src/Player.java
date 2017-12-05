@@ -2,7 +2,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class Player extends Sprite{
+public class Player extends Sprite implements Collideable{
     private int health;
     private int rupees;
     private String name;
@@ -56,6 +56,10 @@ public class Player extends Sprite{
 
     public Weapon getWeapon(){
 	return sword;
+    }
+
+    public void collided(){
+	// do nothing
     }
 
 }

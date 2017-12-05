@@ -61,25 +61,25 @@ public class Movement{
 	sprite.update();
     }
 
-    public static void unitMove(Sprite sprite, int dir){
-	if (!checkCollisions(sprite, Demo.curr_location, dir)){
+    public static void unitMove(Sprite sprite, Player player, int dir){
+	if (!checkCollisions(sprite, player, Demo.curr_location, dir)){
 	   
 	    if (dir == Sprite.UP || dir == Sprite.DOWN){
 		unitMoveY(sprite, dir);
 	    }else{
 		unitMoveX(sprite, dir);
 	    }
-	    //System.out.println(dir);
+	    
 	}
 
 	sprite.getImageView().toFront();
     }
 
-    public static void unitMove(Sprite sprite, int dir, int steps){
+    public static void unitMove(Sprite sprite, Player player, int dir, int steps){
 	
 	if (sprite.getSteps() > 0){
 	    sprite.incSteps(-1);
-	    unitMove(sprite, dir);
+	    unitMove(sprite, player, dir);
 	}else{
 	    sprite.setSteps(steps);
 	    sprite.changeDir();
@@ -88,17 +88,32 @@ public class Movement{
 	sprite.getImageView().toFront();
     }
 
-    private static boolean checkCollisions(Sprite sprite, Location loc, int dir){
+    private static boolean checkCollisions(Sprite sprite, Player player, Location loc, int dir){
 
 	LinkedList<GenericTile> tiles = loc.getMap();
-	//System.out.println(tiles);
-	
-	for (GenericTile g: tiles){
-	    //System.out.println(g instanceof GenericBlock);
-	    if (g instanceof Collideable){
-		
-		int touched = isTouching(sprite, ((Collideable)g));
-		
+	LinkedList<Monster> mons = loc.getMonsters();
+	LinkedList<Sprite> others = new LinkedList<Sprite>();
+	others.add(player);
+
+	isTouching(sprite, tiles);
+	isTouching(sprite, mons);
+	for (Monster m: mons){
+	    if (m instanceof Collideable){
+		isTouching(m, tiles);
+		isTouching(m, others);
+	    }
+	}
+
+
+
+       
+	return false;
+    }
+
+    private static <T> void isTouching(Sprite sprite, LinkedList<T> units){
+	for (T u: units){
+	    if (u instanceof Collideable){
+		int touched = isTouching((Collideable)sprite, (Collideable)u);
 		if (touched == Sprite.DOWN){
 		    sprite.changeXY(0, 2);
 		    
@@ -113,15 +128,11 @@ public class Movement{
 		if (touched == Sprite.LEFT){
 		    sprite.changeXY(-2, 0);
 		}
-		
 	    }
 	}
-	return false;
-       
-	
     }
 
-    private static int isTouching(Sprite sprite, Collideable c){
+    private static int isTouching(Collideable sprite, Collideable c){
 
 	ImageView sprite_img_v = sprite.getImageView();
 	ImageView c_img_v = c.getImageView();
