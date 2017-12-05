@@ -15,12 +15,12 @@ public class MonsterComs extends AnimationTimer{
     @Override
     public void handle(long timestamp){
 
-	System.out.println(mons.get(0).getDir());
+	//System.out.println(mons.get(0).getSteps());
 	for (int i = 0; i < mons.size(); i++){
 	    
 	    Monster m = mons.get(i);
 	    
-	    Movement.unitMove(m, m.getDir(), m.getSteps());
+	    Movement.unitMove(m, m.getDir(), 20);
 	}
 	
     }
