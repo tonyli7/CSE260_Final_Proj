@@ -17,7 +17,7 @@ import javafx.event.EventHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 import java.lang.CloneNotSupportedException;
 
@@ -79,7 +79,7 @@ public class MapMaker extends Application{
 
 		try{
      
-		    writeToFile(convertToHashSet());
+		    writeToFile(convertToLinkedList());
 		}catch (IOException ex){
 		    System.out.println(ex.getMessage());
 		}
@@ -147,7 +147,7 @@ public class MapMaker extends Application{
     }
 
     private static void tileSetup(Pane pane){
-		for (int i = 0; i < num_tiles; i++){
+	for (int i = 0; i < num_tiles; i++){
 	    Tile tile = new Tile(tiles[i]);
 	    
 	    ImageView img_v = new ImageView(new Image(tile.getPath()));
@@ -199,18 +199,21 @@ public class MapMaker extends Application{
     }
 
     // converts HashSet into a bin
-    private static void writeToFile(HashSet<Tile> final_map) throws IOException{
-	ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream("Map1.bin"));
+    private static void writeToFile(LinkedList<Tile> final_map) throws IOException{
+	 File map_dir = new File("maps/");
+	 String[] maps = map_dir.list();
+	 int num_maps = maps.length;
+	
+	ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream("maps/Map" + num_maps + ".bin"));
 	outStream.writeObject(final_map);
 	
     }
 
-    // converts HashMap<Rectangle, Tile> into HashSet<Tile>
-    private static HashSet<Tile> convertToHashSet(){
-	HashSet<Tile> final_map = map.entrySet().stream().map(Map.Entry:: getValue).collect(Collectors.toCollection(HashSet:: new));
+    // converts HashMap<Rectangle, Tile> into LinkedList<Tile>
+    private static LinkedList<Tile> convertToLinkedList(){
+	LinkedList<Tile> final_map = map.entrySet().stream().map(Map.Entry:: getValue).collect(Collectors.toCollection(LinkedList::new));
 
-	//map.entrySet().stream().map(Map.Entry:: getValue).forEach(s -> System.out.println(s));
-
+	//System.out.println(final_map);
 	return final_map;
     }
 }

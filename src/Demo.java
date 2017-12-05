@@ -24,10 +24,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.util.Random;
-import java.util.HashSet;
+import java.util.LinkedList;
 public class Demo extends Application {
 
-    public static HashSet<GenericTile> location = new HashSet<GenericTile>();
+    public static LinkedList<GenericTile> location = new LinkedList<GenericTile>();
     public static Pane pane = new Pane();
     @Override
     public void start(Stage primaryStage) {
@@ -35,10 +35,10 @@ public class Demo extends Application {
 
 	//Pane pane = new Pane();
 	Player player = new Player("Link", "Link", 400, 300);
-	HashSet<Tile> tiles = new HashSet<Tile>();
+	LinkedList<Tile> tiles = new LinkedList<Tile>();
 	
 	try{
-	    tiles = readFile("Map1.bin");
+	    tiles = readFile("maps/Map0.bin");
 	    
 	}catch (IOException | ClassNotFoundException ex){
 	    System.out.println(ex.getMessage());
@@ -135,15 +135,15 @@ public class Demo extends Application {
 	    });
     }
 
-    public static HashSet readFile(String map_file) throws IOException, ClassNotFoundException{
+    public static LinkedList readFile(String map_file) throws IOException, ClassNotFoundException{
 	ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(map_file));
 
-	HashSet map = (HashSet)inStream.readObject();
+	LinkedList map = (LinkedList)inStream.readObject();
 	return map;
     }
 
-    public static HashSet<GenericTile> loadMap(HashSet<Tile> map, Pane pane){
-	HashSet<GenericTile> temp = new HashSet<GenericTile>();
+    public static LinkedList<GenericTile> loadMap(LinkedList<Tile> map, Pane pane){
+	LinkedList<GenericTile> temp = new LinkedList<GenericTile>();
 	for (Tile t: map){
 	    String name = t.toString();
 	    GenericTile new_t = new GenericTile(name, t.getX(), t.getY());
@@ -159,6 +159,10 @@ public class Demo extends Application {
 	    pane.getChildren().add(new_t.getImageView());
 	}
 	return temp;
+	
+    }
+
+    public static void loadLocations(){
 	
     }
 }

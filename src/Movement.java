@@ -77,7 +77,7 @@ public class Movement{
 	sprite.getImageView().toFront();
     }
 
-    private static boolean checkCollisions(Sprite sprite, HashSet<GenericTile> tiles, int dir){
+    private static boolean checkCollisions(Sprite sprite, LinkedList<GenericTile> tiles, int dir){
 	for (GenericTile g: tiles){
 	    if (g instanceof Collideable){
 		int touched = isTouching(sprite, ((Collideable)g));
@@ -219,7 +219,7 @@ public class Movement{
 	player.update();
     }
 
-    private static void checkSlashed(Player player, Weapon sword, HashSet<GenericTile> tiles, double angle){
+    private static void checkSlashed(Player player, Weapon sword, LinkedList<GenericTile> tiles, double angle){
 	//System.out.println(tiles);
 	LinkedList<GenericTile> ll = new LinkedList<GenericTile>();
 	ll.addAll(tiles);
