@@ -62,7 +62,7 @@ public class Movement{
     }
 
     public static void unitMove(Sprite sprite, int dir){
-	if (!checkCollisions(sprite, Demo.curr_tiles, dir)){
+	if (!checkCollisions(sprite, Demo.curr_location, dir)){
 	   
 	    if (dir == Sprite.UP || dir == Sprite.DOWN){
 		unitMoveY(sprite, dir);
@@ -72,18 +72,36 @@ public class Movement{
 	    //System.out.println(dir);
 	}
 
+	sprite.getImageView().toFront();
+    }
+
+    public static void unitMove(Sprite sprite, int dir, int steps){
 	
+	if (sprite.getSteps() > 0){
+	    sprite.incSteps(-1);
+	    unitMove(sprite, dir);
+	}else{
+	    sprite.setSteps(steps);
+	    sprite.changeDir();
+	}
 	
 	sprite.getImageView().toFront();
     }
 
-    private static boolean checkCollisions(Sprite sprite, LinkedList<GenericTile> tiles, int dir){
-	for (GenericTile g: tiles){
-	    if (g instanceof Collideable){
-		int touched = isTouching(sprite, ((Collideable)g));
+    private static boolean checkCollisions(Sprite sprite, Location loc, int dir){
+
+	LinkedList<GenericTile> tiles = loc.getMap();
+	//System.out.println(tiles);
 	
+	for (GenericTile g: tiles){
+	    //System.out.println(g instanceof GenericBlock);
+	    if (g instanceof Collideable){
+		
+		int touched = isTouching(sprite, ((Collideable)g));
+		
 		if (touched == Sprite.DOWN){
 		    sprite.changeXY(0, 2);
+		    
 		}
 		if (touched == Sprite.UP){
 		   
@@ -215,7 +233,7 @@ public class Movement{
 	// makes sure the sword is always positioned based on Player position
 	sword.setX(player.getX() + player.getWidth()/2);
 	sword.setY(player.getY() - player.getHeight()/2);
-	checkSlashed(player, sword, Demo.curr_tiles, angle);
+	checkSlashed(player, sword, Demo.curr_location.getMap(), angle);
 	player.update();
     }
 

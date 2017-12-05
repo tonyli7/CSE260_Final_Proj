@@ -1,0 +1,28 @@
+import javafx.scene.image.ImageView;
+public class GenericBlock extends GenericTile implements Collideable{
+
+    
+    public GenericBlock(String name, double x, double y){
+	super(name, x, y);
+    }
+
+    public double getX(){
+	return x_pos;
+    }
+    public double getY(){
+	return y_pos;
+    }
+    public double getWidth(){
+	return width;
+    }
+    public double getHeight(){
+	return height;
+    }
+    public void collided(){
+	// do nothing
+    }
+    public ImageView getImageView(){
+	return img_v;
+    }
+    
+}

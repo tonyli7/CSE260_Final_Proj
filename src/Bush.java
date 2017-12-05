@@ -2,6 +2,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.io.File;
 
+import java.lang.Cloneable;
+import java.lang.CloneNotSupportedException;
+
 public class Bush extends GenericTile implements Slashable, Collideable{
 
     
@@ -31,6 +34,11 @@ public class Bush extends GenericTile implements Slashable, Collideable{
 
     public void collided(){
 	// do nothing
+    }
+
+    public Bush clone(){
+	Bush clone = new Bush(x_pos, y_pos);
+	return clone;
     }
     
 }

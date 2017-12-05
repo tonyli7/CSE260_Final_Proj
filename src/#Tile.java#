@@ -3,7 +3,7 @@ import javafx.scene.image.Image;
 import java.io.Serializable;
 import java.io.File;
 import java.lang.CloneNotSupportedException;
-import java.lang.Cloneable;
+
 
 public class Tile implements Serializable, Cloneable{
 

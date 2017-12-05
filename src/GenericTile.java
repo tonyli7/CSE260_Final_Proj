@@ -1,6 +1,8 @@
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.io.File;
+import java.lang.Cloneable;
+import java.lang.CloneNotSupportedException;
 
 public class GenericTile extends Tile{
 
@@ -29,5 +31,11 @@ public class GenericTile extends Tile{
     public ImageView getImageView(){
 	return img_v;
     }
+
+    public GenericTile clone() throws CloneNotSupportedException{
+	GenericTile clone = new GenericTile(name, x_pos, y_pos);
+	return clone;
+    }
+  
     
 }

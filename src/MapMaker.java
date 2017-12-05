@@ -71,6 +71,7 @@ public class MapMaker extends Application{
 		if (e.getButton() == MouseButton.SECONDARY){
 		    pane.setCursor(default_cursor);
 		    deselected = true;
+		    coloring = false;
 		    curr_tile = new Tile();
 		}
 	    });
@@ -136,11 +137,24 @@ public class MapMaker extends Application{
 		*/
 		// Clicking functions
 		rect.setOnMouseEntered(e -> {
-			System.out.println(coloring);
+			
 			if (coloring &&
 			    !deselected){
 			    
 			    rect.setFill(new ImagePattern(((ImageCursor)pane.getCursor()).getImage()));
+			    try{
+				map.put(rect, curr_tile.clone());
+			    }catch(CloneNotSupportedException ex){
+				System.out.println(ex.getMessage());
+			    }
+			    
+			    
+			}
+		    });
+
+		rect.setOnMouseClicked(e ->{
+			if (!deselected){
+			     rect.setFill(new ImagePattern(((ImageCursor)pane.getCursor()).getImage()));
 			    try{
 				map.put(rect, curr_tile.clone());
 			    }catch(CloneNotSupportedException ex){
@@ -159,10 +173,6 @@ public class MapMaker extends Application{
 			
 		    });
 
-		
-	
-
-		
 		map.put(rect, new Tile());
 		pane.getChildren().add(rect);
 		
