@@ -1,6 +1,8 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
+
+import javafx.geometry.Bounds;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -297,8 +299,8 @@ public class Movement{
 	double pivot_x = player.getX() + player.getWidth()/2;
 	double pivot_y = player.getY() + player.getHeight()/2;
 
-	double d_x = sword.getX() - pivot_x;
-	double d_y = sword.getY() - pivot_y;
+	double d_x = sword.getBoundsInLocal().getMinX() - pivot_x;
+	double d_y = sword.getBoundsInLocal().getMinY() - pivot_y;
 
 	double r = Math.pow((Math.pow(d_x, 2) + Math.pow(d_y, 2)), 0.5);
 
