@@ -49,9 +49,10 @@ public class Tile implements Serializable, Cloneable{
 	return (Tile)super.clone();
     }
 
-    public String toString(){
+    public String getName(){
 	return name;
     }
+    
     
     
 }

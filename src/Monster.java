@@ -1,6 +1,9 @@
+import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 import java.lang.Cloneable;
 import java.lang.CloneNotSupportedException;
+
+import java.util.LinkedList;
 
 public class Monster extends Sprite implements Slashable, Collideable, Cloneable{
     
@@ -15,10 +18,22 @@ public class Monster extends Sprite implements Slashable, Collideable, Cloneable
 	this.health = health;
     }
 
-    public void slashed(){
-	if (!slashed){
+    public <T> void slashed(Player player, LinkedList<T> monsters, Pane pane){
+
+	if (monsters.get(0) instanceof Monster){
+
+	    Movement.knockback(this, 30, player.getDir());
+	    update();
+	   
 	    health -= 1;
 	    slashed = true;
+	    
+	    if (health == 0){
+		pane.getChildren().remove(getImageView());
+		
+		((LinkedList<Monster>)monsters).remove(this);
+	    }
+	    
 	}
     }
 
@@ -30,8 +45,14 @@ public class Monster extends Sprite implements Slashable, Collideable, Cloneable
 	if (c instanceof Player){
 	    if (!((Player)c).isDamaged()){
 		((Player)c).collided(this, KeyComs.getOppDir(dir));
+
+		System.out.println("Player collided with Monster");
 	    }
 	}
+	if (c instanceof GenericTile){
+	    Movement.knockback(this, 1, dir);
+	}
+
     }
     public double getX(){
 	return x_pos;

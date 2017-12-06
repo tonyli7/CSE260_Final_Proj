@@ -29,7 +29,7 @@ public class KeyComs extends AnimationTimer{
     @Override
     public void handle(long timestamp){
 
-	
+	//System.out.println(player.getX());
 	if (!frontier.isEmpty()){ // if the Player is moving
 	    frontier.remove((Integer)(getOppDir(frontier.peek())));
 	    Movement.unitMove(player, player, frontier.getLast());

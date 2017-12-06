@@ -22,7 +22,10 @@ public class GenericBlock extends GenericTile implements Collideable, Cloneable{
 	return height;
     }
     public void collided(Collideable c, int dir){
-	// do nothing
+	if (c instanceof Sprite){
+	    Movement.knockback((Sprite)c, dir, 2);
+	    System.out.println("Sprite collided with block");
+	}
     }
     public ImageView getImageView(){
 	return img_v;

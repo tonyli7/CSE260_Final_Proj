@@ -1,9 +1,11 @@
+import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.io.File;
 
 import java.lang.Cloneable;
 import java.lang.CloneNotSupportedException;
+import java.util.LinkedList;
 
 public class Bush extends GenericTile implements Slashable, Collideable{
 
@@ -28,12 +30,25 @@ public class Bush extends GenericTile implements Slashable, Collideable{
 	return height;
     }
 
-    public void slashed(){
-	//img_v.setImage(new Image("img/Tiles/Grass.png"));
+    public <T> void slashed(Player player, LinkedList<T> tiles, Pane pane){
+
+	if (tiles.get(0) instanceof GenericTile){
+	
+	    GenericTile new_g = new GenericTile("Grass.png", getX(), getY());
+	    ((LinkedList<GenericTile>)tiles).add(new_g);
+	    pane.getChildren().remove(getImageView());
+	    pane.getChildren().add(new_g.getImageView());
+	    ((LinkedList<GenericTile>)tiles).remove(this);
+	}
     }
 
     public void collided(Collideable c, int dir){
-	// do nothing
+	/*
+	if (c instanceof Sprite){
+	    Movement.knockback((Sprite)c, dir, 2);
+	    System.out.println("Sprite collided with bush");
+	}
+	*/
     }
 
     public Bush clone(){

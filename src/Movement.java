@@ -115,32 +115,27 @@ public class Movement{
 		isTouching(m, tiles);
 		isTouching(m, others);
 	    }
-	}  
+	}
+
+	
 	return false;
     }
 
     private static <T> void isTouching(Sprite sprite, LinkedList<T> units){
 	for (T u: units){
 	    if (u instanceof Collideable){
+		
+		
 		int touched = isTouching((Collideable)sprite, (Collideable)u);
 
 		if (touched >= 0){
 		    sprite.collided((Collideable)u, touched);
-		}
-		if (touched == Sprite.DOWN){
-		    sprite.changeXY(0, 2);
+		    
 		    
 		}
-		if (touched == Sprite.UP){
-		   
-		    sprite.changeXY(0, -2);
-		}
-		if (touched == Sprite.RIGHT){
-		    sprite.changeXY(2, 0);
-		}
-		if (touched == Sprite.LEFT){
-		    sprite.changeXY(-2, 0);
-		}
+
+		//knockback(sprite, touched, 2);
+		
 	    }
 	}
     }
@@ -172,10 +167,13 @@ public class Movement{
 	if (sprite_x < c_right &&
 	    sprite_right > c_x &&
 	    sprite_y < c_bot &&
-	    sprite_bot > c_y){
+	    sprite_bot > c_y &&
+	    !sprite.equals(c)){
 
 	    // Collision detected
-	    
+	    //System.out.println(sprite + "," + c);
+	    //System.out.println(sprite.getX() + "," + c.getX());
+	    //System.out.println(sprite.getY() + "," + c.getY());
 	    
 	    
 	    if (t_collision < b_collision && t_collision < l_collision && t_collision < r_collision ){
@@ -257,29 +255,42 @@ public class Movement{
 	// makes sure the sword is always positioned based on Player position
 	sword.setX(player.getX() + player.getWidth()/2);
 	sword.setY(player.getY() - player.getHeight()/2);
-	checkSlashed(player, sword, Demo.curr_location.getMap(), angle);
+	checkSlashed(player, sword, Demo.curr_location, angle);
 	player.update();
     }
 
-    private static void checkSlashed(Player player, Weapon sword, LinkedList<GenericTile> tiles, double angle){
+    private static void checkSlashed(Player player, Weapon sword, Location loc, double angle){
 	//System.out.println(tiles);
 	LinkedList<GenericTile> ll = new LinkedList<GenericTile>();
+	LinkedList<Monster> ll_mon = new LinkedList<Monster>();
+	LinkedList<GenericTile> tiles = loc.getMap();
+	LinkedList<Monster> mons = loc.getMonsters();
+	
 	ll.addAll(tiles);
 
 	for(int i = 0; i < ll.size(); i++){
 	    GenericTile g = ll.get(i);
 	    if (g instanceof Slashable){
 		if (isSlashed(player, sword.getImageView(), (Slashable)g, angle)){
-		    GenericTile new_g = new GenericTile("Grass.png", g.getX(), g.getY());
-		    //new_g.getImageView().toFront();
-		    tiles.add(new_g);
-		    Demo.pane.getChildren().remove(g.getImageView());
-		    Demo.pane.getChildren().add(new_g.getImageView());
-		    tiles.remove(g);
+		    ((Slashable)g).slashed(player, tiles, Demo.pane);
 		    
 		}
 	    }
 	}
+
+	
+	ll_mon.addAll(mons);
+	for (int i = 0; i < ll_mon.size(); i++){
+	    Monster m = ll_mon.get(i);
+	    if (m instanceof Slashable){
+		if (isSlashed(player, sword.getImageView(), (Slashable)m, angle)){
+		    ((Slashable)m).slashed(player, mons, Demo.pane);
+		}
+	    }
+	}
+	
+	
+      
     }
 
     private static boolean isSlashed(Player player, ImageView sword, Slashable s, double angle){
@@ -298,6 +309,30 @@ public class Movement{
 
 	
 	return s.getImageView().contains(real_x + pivot_x, pivot_y - real_y);
+	
+    }
+
+    public static void knockback(Sprite sprite, double units, int dir){
+	
+	if (dir == Sprite.DOWN){
+	    sprite.changeXY(0, units);
+	    //System.out.println(1111);
+	}
+	if (dir == Sprite.UP){
+	    sprite.changeXY(0, -units);
+	    //System.out.println(1111);
+	}
+	if (dir == Sprite.RIGHT){
+	    sprite.changeXY(units, 0);
+	    //System.out.println(1111);
+	}
+	if (dir == Sprite.LEFT){
+	    sprite.changeXY(-units, 0);
+	    //System.out.println(1111);
+	}
+
+	sprite.update();
+
 	
     }
     

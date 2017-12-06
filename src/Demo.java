@@ -191,12 +191,13 @@ public class Demo extends Application {
     private LinkedList<GenericTile> convertMap(LinkedList<Tile> map){
 	LinkedList<GenericTile> temp = new LinkedList<GenericTile>();
 	for (Tile t: map){
-	    String name = t.toString();
+	    String name = t.getName();
 	    GenericTile new_t = new GenericTile(name, t.getX(), t.getY());
 	    
 	    if (name.equals("Bush.png")){
 		
 		new_t = new Bush(t.getX(), t.getY());
+		System.out.println(new_t.getX() + "," + new_t.getY());
 			
 	    }
 	    if (name.equals("Block.png") || name.equals("Stump.png")){
@@ -204,9 +205,7 @@ public class Demo extends Application {
 		new_t = new GenericBlock(name, t.getX(), t.getY());
 			
 	    }
-
-	    
-	    
+   
 	    temp.add(new_t);
 	}
 	return temp;

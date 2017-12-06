@@ -75,23 +75,14 @@ public class Player extends Sprite implements Collideable{
 		damaged = true;
 	    }
 
-	    if (dir == Sprite.DOWN){
-		changeXY(0, 30);
-		
-	    }
-	    if (dir == Sprite.UP){
-		
-		changeXY(0, -30);
-	    }
-	    if (dir == Sprite.RIGHT){
-		changeXY(30, 0);
-	    }
-	    if (dir == Sprite.LEFT){
-		changeXY(-30, 0);
-	    }
+	    Movement.knockback(this, 30, dir);
+	    System.out.println("Monster collided with player");
+
 	    damaged = false;
-	    update();
-	    
+	   
+	}
+	if (c instanceof GenericTile){
+	    Movement.knockback(this, 2, dir);
 	}
     }
 
