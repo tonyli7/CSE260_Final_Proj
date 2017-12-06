@@ -17,9 +17,6 @@ public class Player extends Sprite implements Collideable{
     
     public Player(String name, String player_dir, double start_x, double start_y){
 	super(player_dir, start_x, start_y);
-
-	
-	
 	this.name = name;
 	health = 6;
 	rupees = 0;

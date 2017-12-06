@@ -1,0 +1,9 @@
+public class Pikachu implements Collideable, Slashable{
+
+    private int health;
+    private boolean stunned;
+    private ImageView img_v;
+    
+    
+    
+}

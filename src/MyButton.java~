@@ -1,0 +1,17 @@
+public class MyButton{
+
+    private String label;
+    private int link;
+    private double x_pos;
+    private double y_pos;
+    private double width;
+    private double height;
+
+    
+    public MyButton(){
+    }
+    
+    
+    
+    
+}

@@ -1,15 +1,13 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.animation.PathTransition;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.scene.input.KeyCode;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
@@ -38,7 +36,10 @@ public class Demo extends Application {
     public static Location curr_location = new Location();
     public static ArrayList<Location> world = new ArrayList<Location>();
     public static Pane pane = new Pane();
+    public static MyScreen splash_screen = new MyScreen(loadScreen("screens/Splash", 3), 0);
+    public static MyScreen menu_screen = new MyScreen(loadScreen("screens/Menu", 3), 0);
     public static Rectangle dmg_rect = new Rectangle(0, 0, 800, 600);
+    public static Scene scene;
     
     public static final int SPLASH = 0;
     public static final int SAVES = 1;
@@ -51,23 +52,14 @@ public class Demo extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-	Random rand = new Random();
-
 	//Pane pane = new Pane();
 	Player player = new Player("Link", "Link", 400, 300);
 	
-	
-	loadLocations();
-	loadPlayer(player, pane);
+	newGame(player);
+	scene = new Scene(splash_screen.getPane(), 800, 608, Color.BLACK);
 
-	RadialGradient rg = new RadialGradient(0, .1, 400, 300, 500, false, CycleMethod.NO_CYCLE, new Stop(0, Color.TRANSPARENT), new Stop(1, Color.RED));
-	
-	dmg_rect.setFill(rg);
-	dmg_rect.setOpacity(.4);
-	pane.getChildren().add(dmg_rect);
-	dmg_rect.setVisible(false);
-	//animation.play();
-	Scene scene = new Scene(pane, 800, 608, Color.BLACK);
+	GAME_STATE = SPLASH;
+	//scene.setRoot(splash_pane);
 	setKeyPressed(scene);
 	setKeyReleased(scene);
 	
@@ -155,7 +147,7 @@ public class Demo extends Application {
 	    });
     }
 
-    public LinkedList<Tile> readFile(String map_file) throws IOException, ClassNotFoundException{
+    public static LinkedList<Tile> readFile(String map_file) throws IOException, ClassNotFoundException{
 	ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(map_file));
 
 	LinkedList map = (LinkedList)inStream.readObject();
@@ -168,7 +160,7 @@ public class Demo extends Application {
 	
 	if (curr_location.getName() != null){
 	    temp = curr_location.getMap();
-	    System.out.println(curr_location.getName());
+	    
 	    for (GenericTile t: temp){
 		pane.getChildren().remove(t.getImageView());
 	    }
@@ -207,7 +199,7 @@ public class Demo extends Application {
 
     }
 
-    private LinkedList<GenericTile> convertMap(LinkedList<Tile> map){
+    private static LinkedList<GenericTile> convertMap(LinkedList<Tile> map){
 	LinkedList<GenericTile> temp = new LinkedList<GenericTile>();
 	for (Tile t: map){
 	    String name = t.getName();
@@ -216,7 +208,7 @@ public class Demo extends Application {
 	    if (name.equals("Bush.png")){
 		
 		new_t = new Bush(t.getX(), t.getY());
-		System.out.println(new_t.getX() + "," + new_t.getY());
+	       
 			
 	    }
 	    if (name.equals("Block.png") || name.equals("Stump.png")){
@@ -231,7 +223,7 @@ public class Demo extends Application {
     }
     
 
-    public void loadLocations(){
+    public static void loadLocations(){
 
 	File map_dir = new File("maps/");
 	String[] maps = map_dir.list();
@@ -273,7 +265,7 @@ public class Demo extends Application {
 	    
 	    while(scn.hasNextLine()){
 		String[] toks = scn.nextLine().split(" ");
-		System.out.println(toks[0] + "adax");
+		
 
 		links.put(new Cors(Integer.parseInt(toks[1]), Integer.parseInt(toks[2])) , getLocation(toks[0]));
 		
@@ -287,7 +279,7 @@ public class Demo extends Application {
 	
     }
 
-    public LinkedList<Monster> loadMonsters(String file_path){
+    public static LinkedList<Monster> loadMonsters(String file_path){
 	LinkedList<Monster> monsters = new LinkedList<Monster>();
 	
 	File mon_f = new File(file_path);
@@ -313,7 +305,7 @@ public class Demo extends Application {
 
     
 
-    public ArrayList<Integer> convertDirPattern(String dir_pattern){
+    public static ArrayList<Integer> convertDirPattern(String dir_pattern){
 
 	ArrayList<Integer> pattern = new ArrayList<Integer>();
 
@@ -336,7 +328,7 @@ public class Demo extends Application {
 	
     }
 
-    public void loadPlayer(Player player, Pane pane){
+    public static void loadPlayer(Player player, Pane pane){
 	pane.getChildren().addAll(player.getWeapon().getImageView(),
 				  player.getImageView());
 
@@ -344,11 +336,11 @@ public class Demo extends Application {
 	ImageView[] hearts = player.getHearts();
 	for(int i = 0; i < hearts.length; i++){
 	    pane.getChildren().add(hearts[i]);
-	    System.out.println(hearts[i].getX());
+	    
 	}
     }
 
-    public Location getLocation(String name){
+    public static Location getLocation(String name){
 	Location temp = new Location();
 	for (int i = 0; i < world.size(); i++){
 	    temp = world.get(i);
@@ -357,5 +349,48 @@ public class Demo extends Application {
 	    }
 	}
 	return temp;
+    }
+
+    public static MyButton[] loadScreen(String screen_path, int num_buttons){
+	File screen_f = new File(screen_path);
+
+	Scanner scn = new Scanner(System.in);
+	try{
+	    scn = new Scanner(screen_f);
+	}catch (FileNotFoundException ex){
+	    System.out.println(ex.getMessage());
+	}
+
+	MyButton[] buttons = new MyButton[num_buttons];
+	int i = 0;
+	while (scn.hasNextLine()){
+	    String[] toks = scn.nextLine().split(",");
+	    buttons[i] = new MyButton(toks[0], Integer.parseInt(toks[1]), 325, i*100 + 200);
+	    i++;    
+	}
+	return buttons;
+    }
+
+    public static MyScreen getScreen(int state){
+	if (GAME_STATE == SPLASH){
+	    return splash_screen;
+	}
+	if (GAME_STATE == MENU){
+	    return menu_screen;
+	}
+	return splash_screen;
+    }
+
+    public static void newGame(Player player){
+	pane.getChildren().clear();
+	loadLocations();
+	loadPlayer(player, pane);
+	
+	RadialGradient rg = new RadialGradient(0, .1, 400, 300, 500, false, CycleMethod.NO_CYCLE, new Stop(0, Color.TRANSPARENT), new Stop(1, Color.RED));
+	
+	dmg_rect.setFill(rg);
+	dmg_rect.setOpacity(.4);
+	pane.getChildren().add(dmg_rect);
+	dmg_rect.setVisible(false);
     }
 }
