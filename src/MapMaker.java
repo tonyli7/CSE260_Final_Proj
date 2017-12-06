@@ -16,8 +16,6 @@ import javafx.scene.input.KeyCode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.LinkedList;

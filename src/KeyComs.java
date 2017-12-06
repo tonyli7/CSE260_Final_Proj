@@ -1,6 +1,7 @@
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import java.util.LinkedList;
+import javafx.application.Platform;
 //import java.util.Deque;
 public class KeyComs extends AnimationTimer{
 
@@ -27,6 +28,8 @@ public class KeyComs extends AnimationTimer{
 
     @Override
     public void handle(long timestamp){
+
+	
 	if (!frontier.isEmpty()){ // if the Player is moving
 	    frontier.remove((Integer)(getOppDir(frontier.peek())));
 	    Movement.unitMove(player, player, frontier.getLast());

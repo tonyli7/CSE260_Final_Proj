@@ -33,11 +33,18 @@ import java.util.Scanner;
 public class Demo extends Application {
 
     public static Location curr_location = new Location();
-    //public static LinkedList<GenericTile> curr_tiles = new LinkedList<GenericTile>();
-    //public static LinkedList<Monster> curr_mons = new LinkedList<Monster>();
     public static HashSet<Location> world = new HashSet<Location>();
-    
     public static Pane pane = new Pane();
+
+    
+    public static final int SPLASH = 0;
+    public static final int SAVES = 1;
+    public static final int GAME = 2;
+    public static final int MENU = 3;
+    public static final int HELP = 4;
+
+    
+    public static int GAME_STATE;
 
     @Override
     public void start(Stage primaryStage) {
@@ -59,7 +66,7 @@ public class Demo extends Application {
 
 	KeyComs key_coms = new KeyComs(player);
 	MonsterComs mon_coms = new MonsterComs(curr_location.getMonsters(), player);
-	System.out.println(curr_location.getMonsters().get(0).getSteps());
+	
 	key_coms.start();
 	mon_coms.start();
 	
@@ -150,9 +157,8 @@ public class Demo extends Application {
     public void loadMap(Location location, Pane pane){
 
 	
-	
 	LinkedList<GenericTile> temp = curr_location.getMap();
-	//System.out.println(temp);
+	
 	for (GenericTile t: temp){
 	    pane.getChildren().remove(t.getImageView());
 	}
@@ -164,15 +170,17 @@ public class Demo extends Application {
 	}
 	
 	temp = curr_location.getMap();
-	//System.out.println(temp);
-	//curr_tiles = (LinkedList<GenericTile>)temp.clone();
+
 	for (GenericTile t: temp){
-	    
-	    pane.getChildren().add(t.getImageView());
+	    ImageView v = t.getImageView();
+	    v.setOnMouseClicked(e -> {
+		    System.out.println(v.getX() + " , " + v.getY());
+		});
+	    pane.getChildren().add(v);
 	}
 
 	LinkedList<Monster> mons = curr_location.getMonsters();
-	//curr_mons = (LinkedList<Monster>)mons.clone();
+	
 	for (Monster m: mons){
 	    pane.getChildren().add(m.getImageView());
 	}

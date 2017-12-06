@@ -28,12 +28,11 @@ public class Monster extends Sprite implements Slashable, Collideable, Cloneable
     
     public void collided(Collideable c, int dir){
 	if (c instanceof Player){
-	    ((Player)c).collided(this, KeyComs.getOppDir(dir));
-
-	    
+	    if (!((Player)c).isDamaged()){
+		((Player)c).collided(this, KeyComs.getOppDir(dir));
+	    }
 	}
     }
-    
     public double getX(){
 	return x_pos;
     }
@@ -48,6 +47,10 @@ public class Monster extends Sprite implements Slashable, Collideable, Cloneable
     }
     public ImageView getImageView(){
 	return img_v; 
+    }
+
+    public boolean isSlashed(){
+	return slashed;
     }
 
     public Object clone() throws CloneNotSupportedException{

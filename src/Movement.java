@@ -8,55 +8,33 @@ import java.util.HashSet;
 import java.util.LinkedList;
 public class Movement{
 
-    public static void move(Sprite sprite, double x_units, double y_units, int dir, int form){
-	
-	Image[] temp = sprite.getImgs(dir);
-	sprite.setDir(dir);
-	sprite.setCurrImg(temp[form]);
-	sprite.update();
-	for (int i = form + 1; i < form + Math.abs(x_units) + 1; i++){
-	    sprite.changeXY(x_units*3, 0);
-	    sprite.setCurrImg(temp[i % temp.length]);
-	    
-	    sprite.setForm(i % temp.length);
-	    sprite.update();
-	}
-
-	for (int i = form + 1; i < form + Math.abs(y_units) + 1; i++){
-	    sprite.changeXY(0, y_units*3);
-	    sprite.setCurrImg(temp[i % temp.length]);
-	    
-	    sprite.setForm(i % temp.length);
-	    sprite.update();
-	}
-    }
-
-    private static void unitMoveX(Sprite sprite, int dir){
+    private static void unitMoveX(Sprite sprite, int dir, double x_units){
 	Image[] temp = sprite.getImgs(dir);
 	sprite.setDir(dir);
 	sprite.setForm((sprite.getForm() + 1) % (temp.length * 5));
 	sprite.setCurrImg(temp[sprite.getForm() / 5]);
 	
 	if (dir == Sprite.LEFT){
-	    sprite.changeXY(-2, 0);
+	    sprite.changeXY(-x_units, 0);
 	}
 	if (dir == Sprite.RIGHT){
-	    sprite.changeXY(2,0);
+	    sprite.changeXY(x_units,0);
 	}
 	sprite.update();
     }
+   
 
-    private static void unitMoveY(Sprite sprite, int dir){
+    private static void unitMoveY(Sprite sprite, int dir, double y_units){
 	Image[] temp = sprite.getImgs(dir);
 	sprite.setDir(dir);
 	sprite.setForm((sprite.getForm() + 1) % (temp.length * 5));
 	sprite.setCurrImg(temp[sprite.getForm() / 5]);
 	
 	if (dir == Sprite.UP){
-	    sprite.changeXY(0, -2);
+	    sprite.changeXY(0, -y_units);
 	}
 	if (dir == Sprite.DOWN){
-	    sprite.changeXY(0, 2);
+	    sprite.changeXY(0, y_units);
 	}
 	sprite.update();
     }
@@ -65,15 +43,17 @@ public class Movement{
 	if (!checkCollisions(sprite, player, Demo.curr_location, dir)){
 	   
 	    if (dir == Sprite.UP || dir == Sprite.DOWN){
-		unitMoveY(sprite, dir);
+		unitMoveY(sprite, dir, 2);
 	    }else{
-		unitMoveX(sprite, dir);
+		unitMoveX(sprite, dir, 2);
 	    }
 	    
 	}
 
 	sprite.getImageView().toFront();
     }
+
+  
 
     public static void unitMove(Sprite sprite, Player player, int dir, int steps){
 	
@@ -88,6 +68,39 @@ public class Movement{
 	sprite.getImageView().toFront();
     }
 
+    
+    
+    public static void follow(Sprite sprite1, Sprite sprite2){
+	double sprite1_x = sprite1.getX();
+	double sprite1_y = sprite1.getY();
+
+	double sprite2_x = sprite2.getX();
+	double sprite2_y = sprite2.getY();
+
+	if (sprite1_x != sprite2_x && sprite1_y != sprite2_y){
+	    double dx = sprite2_x - sprite1_x;
+	    double dy = sprite2_y - sprite1_y;
+	    
+	    double dist = Math.pow(Math.pow(dx, 2) + Math.pow(dy, 2), 0.5);
+
+	    double x_u = dist / dx;
+	    double y_u = dist / dy;
+
+	    if (x_u < 0){
+		unitMoveX(sprite1, Sprite.LEFT, x_u);
+	    }else{
+		unitMoveX(sprite1, Sprite.RIGHT, x_u);
+	    }
+	    if (y_u < 0){
+		unitMoveY(sprite1, Sprite.DOWN, x_u);
+	    }else{
+		unitMoveY(sprite1, Sprite.UP, x_u);
+	    }
+	       
+	}
+    }
+
+    
     private static boolean checkCollisions(Sprite sprite, Player player, Location loc, int dir){
 
 	LinkedList<GenericTile> tiles = loc.getMap();
@@ -102,11 +115,7 @@ public class Movement{
 		isTouching(m, tiles);
 		isTouching(m, others);
 	    }
-	}
-
-
-
-       
+	}  
 	return false;
     }
 

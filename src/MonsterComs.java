@@ -21,8 +21,11 @@ public class MonsterComs extends AnimationTimer{
 	for (int i = 0; i < mons.size(); i++){
 	    
 	    Monster m = mons.get(i);
-	    
-	    Movement.unitMove(m, player, m.getDir(), 20);
+	    if (!m.isSlashed()){
+		Movement.unitMove(m, player, m.getDir(), 20);
+	    }else{
+		Movement.follow(m, player);
+	    }
 	}
 	
     }
