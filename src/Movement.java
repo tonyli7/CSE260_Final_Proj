@@ -85,18 +85,20 @@ public class Movement{
 	    
 	    double dist = Math.pow(Math.pow(dx, 2) + Math.pow(dy, 2), 0.5);
 
-	    double x_u = dist / dx;
-	    double y_u = dist / dy;
+	    double x_u = dx / dist * 2;
+	    double y_u = dy / dist * 2;
 
 	    if (x_u < 0){
-		unitMoveX(sprite1, Sprite.LEFT, x_u);
-	    }else{
+		unitMoveX(sprite1, Sprite.LEFT, -x_u);
+	    }
+	    if (x_u > 0){
 		unitMoveX(sprite1, Sprite.RIGHT, x_u);
 	    }
 	    if (y_u < 0){
-		unitMoveY(sprite1, Sprite.DOWN, x_u);
-	    }else{
-		unitMoveY(sprite1, Sprite.UP, x_u);
+		unitMoveY(sprite1, Sprite.UP, -y_u);
+	    }
+	    if (y_u > 0){
+		unitMoveY(sprite1, Sprite.DOWN, y_u);
 	    }
 	       
 	}
