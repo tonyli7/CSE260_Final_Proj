@@ -32,7 +32,7 @@ public class Bush extends GenericTile implements Slashable, Collideable{
 	//img_v.setImage(new Image("img/Tiles/Grass.png"));
     }
 
-    public void collided(){
+    public void collided(Collideable c, int dir){
 	// do nothing
     }
 

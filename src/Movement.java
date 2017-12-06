@@ -114,6 +114,10 @@ public class Movement{
 	for (T u: units){
 	    if (u instanceof Collideable){
 		int touched = isTouching((Collideable)sprite, (Collideable)u);
+
+		if (touched >= 0){
+		    sprite.collided((Collideable)u, touched);
+		}
 		if (touched == Sprite.DOWN){
 		    sprite.changeXY(0, 2);
 		    
@@ -162,8 +166,8 @@ public class Movement{
 	    sprite_bot > c_y){
 
 	    // Collision detected
-	
-	
+	    
+	    
 	    
 	    if (t_collision < b_collision && t_collision < l_collision && t_collision < r_collision ){
 		//Top collision

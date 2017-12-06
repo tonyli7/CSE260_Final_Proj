@@ -48,8 +48,7 @@ public class Demo extends Application {
 	
 	
 	loadLocations();
-	//loadMonsters("maps/Map0/Monsters0");
-	pane.getChildren().addAll(player.getWeapon().getImageView(), player.getImageView());
+	loadPlayer(player, pane);
 
 
 	//animation.play();
@@ -141,14 +140,14 @@ public class Demo extends Application {
 	    });
     }
 
-    public static LinkedList<Tile> readFile(String map_file) throws IOException, ClassNotFoundException{
+    public LinkedList<Tile> readFile(String map_file) throws IOException, ClassNotFoundException{
 	ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(map_file));
 
 	LinkedList map = (LinkedList)inStream.readObject();
 	return map;
     }
 
-    public static void loadMap(Location location, Pane pane){
+    public void loadMap(Location location, Pane pane){
 
 	
 	
@@ -181,7 +180,7 @@ public class Demo extends Application {
 
     }
 
-    private static LinkedList<GenericTile> convertMap(LinkedList<Tile> map){
+    private LinkedList<GenericTile> convertMap(LinkedList<Tile> map){
 	LinkedList<GenericTile> temp = new LinkedList<GenericTile>();
 	for (Tile t: map){
 	    String name = t.toString();
@@ -206,7 +205,7 @@ public class Demo extends Application {
     }
     
 
-    public static void loadLocations(){
+    public void loadLocations(){
 
 	File map_dir = new File("maps/");
 	String[] maps = map_dir.list();
@@ -240,7 +239,7 @@ public class Demo extends Application {
 	}
     }
 
-    public static LinkedList<Monster> loadMonsters(String file_path){
+    public LinkedList<Monster> loadMonsters(String file_path){
 	LinkedList<Monster> monsters = new LinkedList<Monster>();
 	
 	File mon_f = new File(file_path);
@@ -265,7 +264,7 @@ public class Demo extends Application {
 	
     }
 
-    public static ArrayList<Integer> convertDirPattern(String dir_pattern){
+    public ArrayList<Integer> convertDirPattern(String dir_pattern){
 
 	ArrayList<Integer> pattern = new ArrayList<Integer>();
 
@@ -286,5 +285,17 @@ public class Demo extends Application {
 	}
 	return pattern;
 	
+    }
+
+    public void loadPlayer(Player player, Pane pane){
+	pane.getChildren().addAll(player.getWeapon().getImageView(),
+				  player.getImageView());
+
+
+	ImageView[] hearts = player.getHearts();
+	for(int i = 0; i < hearts.length; i++){
+	    pane.getChildren().add(hearts[i]);
+	    System.out.println(hearts[i].getX());
+	}
     }
 }

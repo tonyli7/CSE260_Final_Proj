@@ -21,7 +21,7 @@ public class GenericBlock extends GenericTile implements Collideable, Cloneable{
     public double getHeight(){
 	return height;
     }
-    public void collided(){
+    public void collided(Collideable c, int dir){
 	// do nothing
     }
     public ImageView getImageView(){

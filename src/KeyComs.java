@@ -91,7 +91,7 @@ public class KeyComs extends AnimationTimer{
 	
     }
 
-    private int getOppDir(int dir){
+    public static int getOppDir(int dir){
 	switch(dir){
 	case Sprite.UP: return Sprite.DOWN;  
 	case Sprite.RIGHT: return Sprite.LEFT;  

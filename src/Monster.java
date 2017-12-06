@@ -26,8 +26,12 @@ public class Monster extends Sprite implements Slashable, Collideable, Cloneable
 	slashed = cond;
     }
     
-    public void collided(){
-	// do nothing
+    public void collided(Collideable c, int dir){
+	if (c instanceof Player){
+	    ((Player)c).collided(this, KeyComs.getOppDir(dir));
+
+	    
+	}
     }
     
     public double getX(){

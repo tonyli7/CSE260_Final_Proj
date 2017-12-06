@@ -10,6 +10,7 @@ public class Player extends Sprite implements Collideable{
     private Image[] attack_left_imgs;
     private Image[] attack_up_imgs;
     private Image[] attack_down_imgs;
+    private ImageView[] hearts;
     private Weapon sword;
     
     public Player(String name, String player_dir, double start_x, double start_y){
@@ -38,7 +39,9 @@ public class Player extends Sprite implements Collideable{
 	loadImgs(attack_down_imgs, num_attack_down_imgs, player_dir, "/SlashingDown/");
 
 	sword = new Weapon();
-
+	hearts = new ImageView[health/2];
+	setupHearts(hearts);
+	
 	img_v.toFront();
 	
     }
@@ -58,8 +61,49 @@ public class Player extends Sprite implements Collideable{
 	return sword;
     }
 
-    public void collided(){
-	// do nothing
+    public void collided(Collideable c, int dir){
+	if (c instanceof Monster){
+	    
+	    takeDamage(1);
+
+	    if (dir == Sprite.DOWN){
+		changeXY(0, 30);
+		
+	    }
+	    if (dir == Sprite.UP){
+		
+		changeXY(0, -30);
+	    }
+	    if (dir == Sprite.RIGHT){
+		changeXY(30, 0);
+	    }
+	    if (dir == Sprite.LEFT){
+		changeXY(-30, 0);
+	    }
+	    
+	}
     }
+
+    private void setupHearts(ImageView[] hearts){
+	Image heart = new Image("img/Link/Life/heart2.png");
+	for (int i = 0; i < hearts.length; i++){
+	    hearts[i] = new ImageView(heart);
+	    hearts[i].setX(i * heart.getWidth() + i * 5 + 24);
+	    hearts[i].setY(24);
+	}
+	
+    }
+
+    public ImageView[] getHearts(){
+	return hearts;
+	
+    }
+
+    public void takeDamage(int dmg){
+	health -= 1;
+	hearts[health / 2].setImage(new Image("img/Link/Life/heart" + health % 2 + ".png"));
+    }
+
+    
 
 }
