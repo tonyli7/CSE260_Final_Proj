@@ -30,6 +30,13 @@ public class KeyComs extends AnimationTimer{
     public void handle(long timestamp){
 
 	if (Demo.GAME_STATE == Demo.GAME){
+
+	    if (player.getHealth() == 0){
+		Demo.GAME_STATE = Demo.OVER;
+		Demo.scene.setRoot(Demo.over_screen.getPane());
+		
+	    }
+	    
 	    for (Cors c: Demo.curr_location.getLinks().keySet()){
 		if (Math.abs(player.getX() - c.getX()) < 10 &&
 		    Math.abs(player.getY() - c.getY()) < 10){
@@ -144,8 +151,6 @@ public class KeyComs extends AnimationTimer{
 			
 		    }
 		    Demo.scene.setRoot(Demo.pane);
-		    
-		    
 		}
 		if (screen == Demo.MENU){
 		    Demo.scene.setRoot(Demo.menu_screen.getPane());
@@ -153,6 +158,21 @@ public class KeyComs extends AnimationTimer{
 		}
 		if (screen == Demo.SPLASH){
 		    Demo.scene.setRoot(Demo.splash_screen.getPane());
+		}
+		if (screen == Demo.SAVES){
+		   
+		    if (Demo.GAME_STATE == Demo.OVER || Demo.GAME_STATE == Demo.SPLASH){
+			 Demo.newGame(player);
+			 Saver.loadGame(player, "saves/save0");
+			 Demo.scene.setRoot(Demo.pane);
+			 screen = Demo.GAME;
+		    }
+		    if (Demo.GAME_STATE == Demo.MENU){
+			Saver.saveGame(player, "saves/save0");
+			Demo.scene.setRoot(Demo.pane);
+			screen = Demo.GAME;
+		    }
+		    
 		}
 		Demo.GAME_STATE = screen;
 	    }

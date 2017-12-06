@@ -17,7 +17,7 @@ public class MyScreen{
     
     public MyScreen(MyButton[] buttons, int screen){
 
-	Rectangle rect = new Rectangle(285, 150 , 200, buttons.length * 100);
+	Rectangle rect = new Rectangle(200, 150 , 370, buttons.length * 100);
 	rect.setFill(Color.BLACK);
 	rect.setOpacity(.4);
 

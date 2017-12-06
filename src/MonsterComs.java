@@ -28,6 +28,7 @@ public class MonsterComs extends AnimationTimer{
 		if (!m.isSlashed()){
 	       
 		    Movement.unitMove(m, player, m.getDir(), 20);
+		    
 		}else if (m.death() < 0){
 		    Movement.follow(m, player);
 		}

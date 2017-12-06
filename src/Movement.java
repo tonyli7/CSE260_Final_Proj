@@ -64,6 +64,7 @@ public class Movement{
 	if (sprite.getSteps() > 0){
 	    sprite.incSteps(-1);
 	    unitMove(sprite, player, dir);
+	    //System.out.println(sprite.get);
 	}else{
 	    sprite.setSteps(steps);
 	    sprite.changeDir();
@@ -136,11 +137,8 @@ public class Movement{
 
 		if (touched >= 0){
 		    sprite.collided((Collideable)u, touched);
-		    
-		    
+		       
 		}
-
-		//knockback(sprite, touched, 2);
 		
 	    }
 	}

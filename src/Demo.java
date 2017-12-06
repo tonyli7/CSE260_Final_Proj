@@ -38,6 +38,8 @@ public class Demo extends Application {
     public static Pane pane = new Pane();
     public static MyScreen splash_screen = new MyScreen(loadScreen("screens/Splash", 3), 0);
     public static MyScreen menu_screen = new MyScreen(loadScreen("screens/Menu", 3), 0);
+    public static MyScreen over_screen = new MyScreen(loadScreen("screens/Over", 2), 0);
+    
     public static Rectangle dmg_rect = new Rectangle(0, 0, 800, 600);
     public static Scene scene;
     
@@ -46,8 +48,7 @@ public class Demo extends Application {
     public static final int GAME = 2;
     public static final int MENU = 3;
     public static final int HELP = 4;
-
-    
+    public static final int OVER = 5;
     public static int GAME_STATE;
 
     @Override
@@ -55,7 +56,7 @@ public class Demo extends Application {
 	//Pane pane = new Pane();
 	Player player = new Player("Link", "Link", 400, 300);
 	
-	newGame(player);
+	//newGame(player);
 	scene = new Scene(splash_screen.getPane(), 800, 608, Color.BLACK);
 
 	GAME_STATE = SPLASH;
@@ -377,6 +378,9 @@ public class Demo extends Application {
 	}
 	if (GAME_STATE == MENU){
 	    return menu_screen;
+	}
+	if (GAME_STATE == OVER){
+	    return over_screen;
 	}
 	return splash_screen;
     }

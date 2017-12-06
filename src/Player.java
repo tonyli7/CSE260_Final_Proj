@@ -68,7 +68,11 @@ public class Player extends Sprite implements Collideable{
     public int getHealth(){
 	return health;
     }
-    
+
+    public void setHealth(int health){
+	this.health = health;
+	
+    }
     public void collided(Collideable c, int dir){
 	if (c instanceof Monster){
 	    if (!damaged){
@@ -110,6 +114,10 @@ public class Player extends Sprite implements Collideable{
     
     public void takeDamage(int dmg){
 	health -= 1;
+	updateHealth();
+    }
+
+    public void updateHealth(){
 	hearts[health / 2].setImage(new Image("img/Link/Life/heart" + health % 2 + ".png"));
     }
 
