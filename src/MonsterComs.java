@@ -7,22 +7,24 @@ import java.util.Random;
 
 public class MonsterComs extends AnimationTimer{
 
-    private LinkedList<Monster> mons;
+    //private Location curr_location;
     private Player player;
-    public MonsterComs(LinkedList<Monster> mons, Player player){
-	this.mons = mons;
+    public MonsterComs(Player player){
 	this.player = player;
 	
     }
 
     @Override
     public void handle(long timestamp){
-
-	//System.out.println(mons.get(0).getSteps());
+	LinkedList<Monster> mons = Demo.curr_location.getMonsters();
+	System.out.println(Demo.curr_location.getName());
 	for (int i = 0; i < mons.size(); i++){
 	    
 	    Monster m = mons.get(i);
+	    
+	    
 	    if (!m.isSlashed()){
+		System.out.println(m.getImageView().getX());
 		Movement.unitMove(m, player, m.getDir(), 20);
 	    }else if (m.death() < 0){
 		Movement.follow(m, player);

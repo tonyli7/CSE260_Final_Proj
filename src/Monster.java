@@ -23,6 +23,7 @@ public class Monster extends Sprite implements Slashable, Collideable, Cloneable
 	death_imgs = new Image[7];
 	death = -1;
 	loadImgs(death_imgs, 7, "Death", "/");
+	slashed = false;
     }
 
     public <T> void slashed(Player player, LinkedList<T> monsters, Pane pane){
@@ -105,7 +106,7 @@ public class Monster extends Sprite implements Slashable, Collideable, Cloneable
 	return death_img_v;
     }
     
-    public Object clone() throws CloneNotSupportedException{
+    public Monster clone() throws CloneNotSupportedException{
 	Monster clone = new Monster(name, health, name, x_pos, y_pos);
 	clone.setSteps(steps);
 	clone.setDirPattern(dir_pattern);

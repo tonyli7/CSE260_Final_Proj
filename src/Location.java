@@ -9,7 +9,8 @@ import java.lang.CloneNotSupportedException;
 public class Location implements Cloneable{
     private LinkedList<GenericTile> map;
     private LinkedList<Monster> monsters;
-    private HashMap<GenericTile, Location> links;
+    private HashMap<Cors, Location> links;
+    private String name;
 
     public Location(){
     }
@@ -18,12 +19,13 @@ public class Location implements Cloneable{
 	this.map = map;
     }
 
-    public Location(LinkedList<GenericTile> map, LinkedList<Monster> monsters){
+    public Location(LinkedList<GenericTile> map, LinkedList<Monster> monsters, String name){
 	this.map = map;
 	this.monsters = monsters;
+	this.name = name;
     }
     
-    public Location(LinkedList<GenericTile> map, HashMap<GenericTile, Location> links){
+    public Location(LinkedList<GenericTile> map, HashMap<Cors, Location> links){
 	this.map = map;
     }
 
@@ -38,7 +40,7 @@ public class Location implements Cloneable{
 	return map;
     }
 
-    public HashMap<GenericTile, Location> getLinks(){
+    public HashMap<Cors, Location> getLinks(){
 	return links;
     }
 
@@ -46,6 +48,15 @@ public class Location implements Cloneable{
 	return monsters;
     }
 
+    public void setLinks(HashMap<Cors, Location> links){
+	this.links = links;
+	
+    }
+
+    public String getName(){
+	return name;
+    }
+    
     public Location clone() throws CloneNotSupportedException{
 
 	LinkedList<GenericTile> map_copy = new LinkedList<GenericTile>();
@@ -75,7 +86,7 @@ public class Location implements Cloneable{
 	    System.out.println(ex.getMessage());
 	}
 	
-	Location clone = new Location(map_copy, monsters_copy);
+	Location clone = new Location(map_copy, monsters_copy, name);
 	return clone;
 	
     }

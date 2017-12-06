@@ -173,6 +173,7 @@ public abstract class Sprite implements Collideable{
 	img_v.setFitHeight(curr_img.getHeight()*1.5);
 	img_v.setX(x_pos);
 	img_v.setY(y_pos);
+	//System.out.println(x_pos);
 	//img_v.toFront();
 
     }

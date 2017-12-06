@@ -28,8 +28,29 @@ public class KeyComs extends AnimationTimer{
 
     @Override
     public void handle(long timestamp){
+	for (Cors c: Demo.curr_location.getLinks().keySet()){
+	    if (Math.abs(player.getX() - c.getX()) < 10 &&
+		Math.abs(player.getY() - c.getY()) < 10){
 
-	//System.out.println(player.getX());
+		if (c.getX() == 768){
+		    player.setX(Math.IEEEremainder(-1 * c.getX(), 800));
+		}
+		else if (c.getX() == 0){
+		    player.setX(c.getX() - 40 + 800);
+		    System.out.println(player.getX());
+		}
+		else if(c.getY() == 576){
+		    player.setY(Math.IEEEremainder(-1 * c.getY(), 608));
+		}
+		else if(c.getY() == 0){
+		    player.setY(c.getY() - 40 + 608);
+		}
+
+		Demo.loadMap(Demo.curr_location.getLinks().get(c), Demo.pane);
+		player.update();
+	    }
+	}
+	
 	if (!frontier.isEmpty()){ // if the Player is moving
 	    frontier.remove((Integer)(getOppDir(frontier.peek())));
 	    Movement.unitMove(player, player, frontier.getLast());
@@ -104,5 +125,7 @@ public class KeyComs extends AnimationTimer{
 	    
 	}
     }
+
+  
     
 }

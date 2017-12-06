@@ -30,13 +30,13 @@ import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Demo extends Application {
 
     public static Location curr_location = new Location();
-    public static HashSet<Location> world = new HashSet<Location>();
+    public static ArrayList<Location> world = new ArrayList<Location>();
     public static Pane pane = new Pane();
     public static Rectangle dmg_rect = new Rectangle(0, 0, 800, 600);
     
@@ -67,13 +67,13 @@ public class Demo extends Application {
 	pane.getChildren().add(dmg_rect);
 	dmg_rect.setVisible(false);
 	//animation.play();
-	Scene scene = new Scene(pane, 800, 600, Color.BLACK);
+	Scene scene = new Scene(pane, 800, 608, Color.BLACK);
 	setKeyPressed(scene);
 	setKeyReleased(scene);
 	
 
 	KeyComs key_coms = new KeyComs(player);
-	MonsterComs mon_coms = new MonsterComs(curr_location.getMonsters(), player);
+	MonsterComs mon_coms = new MonsterComs(player);
 	
 	key_coms.start();
 	mon_coms.start();
@@ -162,15 +162,23 @@ public class Demo extends Application {
 	return map;
     }
 
-    public void loadMap(Location location, Pane pane){
+    public static void loadMap(Location location, Pane pane){
 
+	LinkedList<GenericTile> temp;
 	
-	LinkedList<GenericTile> temp = curr_location.getMap();
-	
-	for (GenericTile t: temp){
-	    pane.getChildren().remove(t.getImageView());
+	if (curr_location.getName() != null){
+	    temp = curr_location.getMap();
+	    System.out.println(curr_location.getName());
+	    for (GenericTile t: temp){
+		pane.getChildren().remove(t.getImageView());
+	    }
+
+	    LinkedList<Monster> mons = curr_location.getMonsters();
+	    for (Monster m: mons){
+		pane.getChildren().remove(m.getImageView());
+	    }
+	    
 	}
-
 	try{
 	    curr_location = (Location)location.clone();
 	}catch(CloneNotSupportedException ex){
@@ -185,6 +193,7 @@ public class Demo extends Application {
 		    System.out.println(v.getX() + " , " + v.getY());
 		});
 	    pane.getChildren().add(v);
+	    v.toBack();
 	}
 
 	LinkedList<Monster> mons = curr_location.getMonsters();
@@ -192,6 +201,8 @@ public class Demo extends Application {
 	for (Monster m: mons){
 	    pane.getChildren().add(m.getImageView());
 	}
+
+	curr_location.setLinks(location.getLinks());
 	
 
     }
@@ -238,20 +249,42 @@ public class Demo extends Application {
 	    }
 
 	  
-	    Location new_loc = new Location(convertMap(tiles), loadMonsters("maps/" + s + "/Monsters" + i));
+	    Location new_loc = new Location(convertMap(tiles), loadMonsters("maps/" + s + "/Monsters" + i), s);
 	    
-	    if (world.isEmpty()){
-
-		try{
-		    curr_location = (Location)new_loc.clone();
-		}catch(CloneNotSupportedException ex){
-		    System.out.println(ex.getMessage());
-		}
-		//curr_tiles = (LinkedList<GenericTile>)new_loc.getMap().clone();
-		loadMap(new_loc, pane);
-	    }
+	   
 	    world.add(new_loc);
 	}
+
+	for (int i = 0; i < num_maps; i++){
+	    String s = maps[i];
+
+	    File links_f = new File("maps/" + s + "/Links" + i);
+
+	    Scanner scn = new Scanner(System.in);
+	    try{
+		scn = new Scanner(links_f);
+	    }catch (FileNotFoundException ex){
+		System.out.println(ex.getMessage());
+		
+	    }
+	    
+
+	    HashMap<Cors, Location> links = new HashMap<Cors, Location>();
+	    
+	    while(scn.hasNextLine()){
+		String[] toks = scn.nextLine().split(" ");
+		System.out.println(toks[0] + "adax");
+
+		links.put(new Cors(Integer.parseInt(toks[1]), Integer.parseInt(toks[2])) , getLocation(toks[0]));
+		
+	    }
+
+	    getLocation(s).setLinks(links);
+	    
+	}
+	loadMap(getLocation("Map0"), pane);
+	
+	
     }
 
     public LinkedList<Monster> loadMonsters(String file_path){
@@ -275,9 +308,10 @@ public class Demo extends Application {
 	    //System.out.println(monster.getSteps());
 	    monsters.add(monster);
 	}
-	return monsters;
-	
+	return monsters;	
     }
+
+    
 
     public ArrayList<Integer> convertDirPattern(String dir_pattern){
 
@@ -312,5 +346,16 @@ public class Demo extends Application {
 	    pane.getChildren().add(hearts[i]);
 	    System.out.println(hearts[i].getX());
 	}
+    }
+
+    public Location getLocation(String name){
+	Location temp = new Location();
+	for (int i = 0; i < world.size(); i++){
+	    temp = world.get(i);
+	    if (temp.getName().equals(name)){
+		return temp;
+	    }
+	}
+	return temp;
     }
 }
