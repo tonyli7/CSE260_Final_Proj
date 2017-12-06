@@ -42,6 +42,8 @@ public class Movement{
     }
 
     public static void unitMove(Sprite sprite, Player player, int dir){
+	
+	
 	if (!checkCollisions(sprite, player, Demo.curr_location, dir)){
 	   
 	    if (dir == Sprite.UP || dir == Sprite.DOWN){
@@ -106,7 +108,7 @@ public class Movement{
 
     
     private static boolean checkCollisions(Sprite sprite, Player player, Location loc, int dir){
-
+	Demo.dmg_rect.setVisible(false);
 	LinkedList<GenericTile> tiles = loc.getMap();
 	LinkedList<Monster> mons = loc.getMonsters();
 	LinkedList<Sprite> others = new LinkedList<Sprite>();

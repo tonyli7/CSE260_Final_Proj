@@ -2,7 +2,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.animation.PathTransition;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
@@ -15,6 +15,9 @@ import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.Stop;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,7 +38,7 @@ public class Demo extends Application {
     public static Location curr_location = new Location();
     public static HashSet<Location> world = new HashSet<Location>();
     public static Pane pane = new Pane();
-
+    public static Rectangle dmg_rect = new Rectangle(0, 0, 800, 600);
     
     public static final int SPLASH = 0;
     public static final int SAVES = 1;
@@ -57,7 +60,12 @@ public class Demo extends Application {
 	loadLocations();
 	loadPlayer(player, pane);
 
-
+	RadialGradient rg = new RadialGradient(0, .1, 400, 300, 500, false, CycleMethod.NO_CYCLE, new Stop(0, Color.TRANSPARENT), new Stop(1, Color.RED));
+	
+	dmg_rect.setFill(rg);
+	dmg_rect.setOpacity(.4);
+	pane.getChildren().add(dmg_rect);
+	dmg_rect.setVisible(false);
 	//animation.play();
 	Scene scene = new Scene(pane, 800, 600, Color.BLACK);
 	setKeyPressed(scene);
