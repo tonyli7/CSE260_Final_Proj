@@ -186,7 +186,7 @@ public class MapMaker extends Application{
 	    
 	    ImageView img_v = new ImageView(new Image(tile.getPath()));
 	    img_v.setX(25*32 + 30);
-	    img_v.setY(i * 32 + i*20);
+	    img_v.setY(i * 32 + i*10);
 	    
 	    img_v.setFitHeight(32);
 	    img_v.setFitWidth(32);

@@ -242,7 +242,7 @@ public class Demo extends Application {
 	    }
 
 	  
-	    Location new_loc = new Location(convertMap(tiles), loadMonsters("maps/" + s + "/Monsters" + i), s);
+	    Location new_loc = new Location(convertMap(tiles), loadMonsters("maps/" + s + "/Monsters" + s.charAt(s.length() - 1)), s);
 	    
 	   
 	    world.add(new_loc);
@@ -250,8 +250,8 @@ public class Demo extends Application {
 
 	for (int i = 0; i < num_maps; i++){
 	    String s = maps[i];
-
-	    File links_f = new File("maps/" + s + "/Links" + i);
+	    
+	    File links_f = new File("maps/" + s + "/Links" + s.charAt(s.length() - 1));
 
 	    Scanner scn = new Scanner(System.in);
 	    try{
